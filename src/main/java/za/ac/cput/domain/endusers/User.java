@@ -1,11 +1,11 @@
 package za.ac.cput.domain.endusers;
 
 public abstract class User {
-    private String userName;
-    private String fullname;
-    private String emailAddress;
-    private String password;
-    private UserType userType;
+    private static String userName;
+    private static String fullname;
+    private static String emailAddress;
+    private static String password;
+    private static UserType userType;
 
 
     public User() {

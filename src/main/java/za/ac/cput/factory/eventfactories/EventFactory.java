@@ -15,7 +15,7 @@ public class EventFactory {
                 .setEventDescription(eventDescription)
                 .setEventDate(eventDate)
                 .setEventTime(Time.valueOf(eventTime))
-                .setVenueId(venueId)
+               // .setVenueId(venueId)
                 .build();
     }
 }
