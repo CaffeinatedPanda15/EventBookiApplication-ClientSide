@@ -6,186 +6,273 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegisterCustomerPage extends JPanel implements ActionListener {
-    // === North (3 rows × 6 cols) ===
-    private JPanel northPanel;
-    private JPanel northRow1Col1, northRow1Col2, northRow1Col3, northRow1Col4, northRow1Col5, northRow1Col6;
-    private JPanel northRow2Col1, northRow2Col2, northRow2Col3, northRow2Col4, northRow2Col5, northRow2Col6;
-    private JPanel northRow3Col1, northRow3Col2, northRow3Col3, northRow3Col4, northRow3Col5, northRow3Col6;
 
-    // === Center (form) ===
-    private JLabel lblTitle, lblUserName, lblFullName, lblEmail, lblPassword,
-            lblUserType, lblAddress, lblContact;
-    private JTextField txtUserName, txtFullName, txtEmail, txtAddress, txtContact;
+    // --- North ---
+    private JPanel panelNorth;
+    private JLabel lblLogo;
+    private JLabel lblTitle;
+    private JButton btnHome;
+    private JButton btnEvents;
+    private JButton btnVenues;
+    private JButton btnLoginPage;
+
+    // --- West (registration form) ---
+    private JPanel panelWest;
+    private JLabel lblUserName;
+    private JLabel lblFullName;
+    private JLabel lblEmail;
+    private JLabel lblPassword;
+    private JLabel lblUserType;
+    private JLabel lblAddress;
+    private JLabel lblContact;
+
+    private JTextField txtUserName;
+    private JTextField txtFullName;
+    private JTextField txtEmail;
     private JPasswordField txtPassword;
-    private JComboBox<String> cbxUserType;
+    private JComboBox<String> comboUserType;
+    private JTextField txtAddress;
+    private JTextField txtContact;
+
     private JButton btnRegister;
 
-    private BackgroundPanel backgroundPanel;
+    // --- Empty labels for spacing (manually) ---
+    private JLabel empty1;
+    private JLabel empty2;
+    private JLabel empty3;
+    private JLabel empty4;
+    private JLabel empty5;
+    private JLabel empty6;
+    private JLabel empty7;
+    private JLabel empty8;
+    private JLabel empty9;
+    private JLabel empty10;
+    private JLabel empty11;
+    private JLabel empty12;
+
+    // --- Right (background image) ---
+    private BackgroundPanel panelRight;
 
     public RegisterCustomerPage() {
         super(new BorderLayout());
 
-        // ---- Background for center content ----
-        ImageIcon bgIcon = new ImageIcon(getClass().getResource("/background.jpg"));
-        backgroundPanel = new BackgroundPanel(bgIcon.getImage());
-        backgroundPanel.setLayout(new BorderLayout(10, 10));
+        // --- North ---
+        panelNorth = new JPanel(new GridLayout(3, 1));
+        panelNorth.setBackground(Color.BLACK);
 
-        // ---- North grid (3 rows × 6) to match Login ----
-        northPanel = new JPanel(new GridLayout(3, 6));
-        // Row 1
-        northRow1Col1 = new JPanel(new BorderLayout()); northRow1Col2 = new JPanel(); northRow1Col3 = new JPanel();
-        northRow1Col4 = new JPanel(); northRow1Col5 = new JPanel(); northRow1Col6 = new JPanel();
-        // Row 2
-        northRow2Col1 = new JPanel(); northRow2Col2 = new JPanel(); northRow2Col3 = new JPanel();
-        northRow2Col4 = new JPanel(); northRow2Col5 = new JPanel(); northRow2Col6 = new JPanel();
-        // Row 3
-        northRow3Col1 = new JPanel(); northRow3Col2 = new JPanel(); northRow3Col3 = new JPanel();
-        northRow3Col4 = new JPanel(); northRow3Col5 = new JPanel(); northRow3Col6 = new JPanel();
+        ImageIcon logoIcon = new ImageIcon(getClass().getResource("/Logo.jpg"));
+        Image logoImg = logoIcon.getImage().getScaledInstance(100, 60, Image.SCALE_SMOOTH);
+        lblLogo = new JLabel(new ImageIcon(logoImg));
+        lblLogo.setHorizontalAlignment(JLabel.CENTER);
 
-        // ---- Form UI ----
         lblTitle = new JLabel("Register as Customer", JLabel.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
         lblTitle.setForeground(Color.WHITE);
 
+        btnHome = new JButton("Home");
+        btnEvents = new JButton("Current Events");
+        btnVenues = new JButton("Venues");
+        btnLoginPage = new JButton("Login Page");
+
+        // Style buttons manually
+        btnHome.setBackground(new Color(50, 50, 50));
+        btnHome.setForeground(Color.WHITE);
+        btnHome.setFocusPainted(false);
+        btnHome.setBorderPainted(false);
+        btnHome.setFont(new Font("Arial", Font.BOLD, 14));
+        btnHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btnEvents.setBackground(new Color(50, 50, 50));
+        btnEvents.setForeground(Color.WHITE);
+        btnEvents.setFocusPainted(false);
+        btnEvents.setBorderPainted(false);
+        btnEvents.setFont(new Font("Arial", Font.BOLD, 14));
+        btnEvents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btnVenues.setBackground(new Color(50, 50, 50));
+        btnVenues.setForeground(Color.WHITE);
+        btnVenues.setFocusPainted(false);
+        btnVenues.setBorderPainted(false);
+        btnVenues.setFont(new Font("Arial", Font.BOLD, 14));
+        btnVenues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btnLoginPage.setBackground(new Color(50, 50, 50));
+        btnLoginPage.setForeground(Color.WHITE);
+        btnLoginPage.setFocusPainted(false);
+        btnLoginPage.setBorderPainted(false);
+        btnLoginPage.setFont(new Font("Arial", Font.BOLD, 14));
+        btnLoginPage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // --- West (registration form) ---
+        panelWest = new JPanel();
+        panelWest.setBackground(Color.BLACK);
+        panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
+
         lblUserName = new JLabel("Username:");
-        lblFullName = new JLabel("Full Name:");
-        lblEmail = new JLabel("Email Address:");
-        lblPassword = new JLabel("Password:");
-        lblUserType = new JLabel("User Type:");
-        lblAddress = new JLabel("Address:");
-        lblContact = new JLabel("Contact Number:");
-
-        // make labels visible on image
-        for (JLabel l : new JLabel[]{lblUserName, lblFullName, lblEmail, lblPassword, lblUserType, lblAddress, lblContact}) {
-            l.setForeground(Color.WHITE);
-        }
-
+        lblUserName.setForeground(Color.WHITE);
         txtUserName = new JTextField(15);
+
+        lblFullName = new JLabel("Full Name:");
+        lblFullName.setForeground(Color.WHITE);
         txtFullName = new JTextField(15);
+
+        lblEmail = new JLabel("Email:");
+        lblEmail.setForeground(Color.WHITE);
         txtEmail = new JTextField(15);
+
+        lblPassword = new JLabel("Password:");
+        lblPassword.setForeground(Color.WHITE);
         txtPassword = new JPasswordField(15);
+
+        lblUserType = new JLabel("User Type:");
+        lblUserType.setForeground(Color.WHITE);
+        comboUserType = new JComboBox<>();
+        comboUserType.addItem("Regular");
+        comboUserType.addItem("VIP");
+
+        lblAddress = new JLabel("Address:");
+        lblAddress.setForeground(Color.WHITE);
         txtAddress = new JTextField(15);
+
+        lblContact = new JLabel("Contact Number:");
+        lblContact.setForeground(Color.WHITE);
         txtContact = new JTextField(15);
 
-        cbxUserType = new JComboBox<>(new String[]{"CUSTOMER", "ADMIN"});
         btnRegister = new JButton("Register");
+        btnRegister.addActionListener(this);
+
+        // --- Empty labels manually ---
+        empty1 = new JLabel();
+        empty2 = new JLabel();
+        empty3 = new JLabel();
+        empty4 = new JLabel();
+        empty5 = new JLabel();
+        empty6 = new JLabel();
+        empty7 = new JLabel();
+        empty8 = new JLabel();
+        empty9 = new JLabel();
+        empty10 = new JLabel();
+        empty11 = new JLabel();
+        empty12 = new JLabel();
+
+        // --- Right (background image) ---
+        ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
+        panelRight = new BackgroundPanel(bgIcon.getImage());
     }
 
     public void setGUI() {
-        Color darkGray = new Color(25, 25, 25);
-        Color black = new Color(0, 0, 0);
 
-        // ---------- NORTH STYLING ----------
-        // Row 1 dark gray
-        northRow1Col1.setBackground(darkGray); northRow1Col2.setBackground(darkGray); northRow1Col3.setBackground(darkGray);
-        northRow1Col4.setBackground(darkGray); northRow1Col5.setBackground(darkGray); northRow1Col6.setBackground(darkGray);
-        // Row 2 black
-        northRow2Col1.setBackground(black); northRow2Col2.setBackground(black); northRow2Col3.setBackground(black);
-        northRow2Col4.setBackground(black); northRow2Col5.setBackground(black); northRow2Col6.setBackground(black);
-        // Row 3 dark gray
-        northRow3Col1.setBackground(darkGray); northRow3Col2.setBackground(darkGray); northRow3Col3.setBackground(darkGray);
-        northRow3Col4.setBackground(darkGray); northRow3Col5.setBackground(darkGray); northRow3Col6.setBackground(darkGray);
+        // --- North layout ---
+        panelNorth.add(lblLogo);
 
-        // Logo in Row1-Col1
-        ImageIcon icon = new ImageIcon(getClass().getResource("/Logo.jpg"));
-        JLabel logo = new JLabel(icon);
-        logo.setHorizontalAlignment(SwingConstants.CENTER);
-        logo.setVerticalAlignment(SwingConstants.CENTER);
-        northRow1Col1.add(logo, BorderLayout.CENTER);
+        JPanel rowTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        rowTitle.setOpaque(false);
+        rowTitle.add(lblTitle);
+        panelNorth.add(rowTitle);
 
-        // Row 3 navigation buttons
-        JButton btnHome = new JButton("Home");
-        JButton btnEvents = new JButton("Current Events");
-        JButton btnVenues = new JButton("Venues");
-        JButton btnLoginSignup = new JButton("Login/SignUp");
+        JPanel rowNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+        rowNav.setOpaque(false);
+        rowNav.add(btnHome);
+        rowNav.add(btnEvents);
+        rowNav.add(btnVenues);
+        rowNav.add(btnLoginPage);
+        panelNorth.add(rowNav);
 
-        JButton[] navButtons = {btnHome, btnEvents, btnVenues, btnLoginSignup};
-        for (JButton b : navButtons) {
-            b.setBackground(new Color(50, 50, 50));
-            b.setForeground(Color.WHITE);
-            b.setFocusPainted(false);
-            b.setBorderPainted(false);
-            b.setFont(new Font("Arial", Font.BOLD, 14));
-            b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        }
-        northRow3Col1.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); northRow3Col1.add(btnHome);
-        northRow3Col2.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); northRow3Col2.add(btnEvents);
-        northRow3Col3.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); northRow3Col3.add(btnVenues);
-        northRow3Col4.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); northRow3Col4.add(btnLoginSignup);
+        // --- West layout ---
+        panelWest.add(empty1);
+        panelWest.add(empty2);
 
-        // Add all cells into the north grid
-        northPanel.add(northRow1Col1); northPanel.add(northRow1Col2); northPanel.add(northRow1Col3);
-        northPanel.add(northRow1Col4); northPanel.add(northRow1Col5); northPanel.add(northRow1Col6);
+        JPanel userRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        userRow.setOpaque(false);
+        userRow.add(lblUserName);
+        userRow.add(txtUserName);
+        panelWest.add(userRow);
 
-        northPanel.add(northRow2Col1); northPanel.add(northRow2Col2); northPanel.add(northRow2Col3);
-        northPanel.add(northRow2Col4); northPanel.add(northRow2Col5); northPanel.add(northRow2Col6);
+        JPanel fullNameRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        fullNameRow.setOpaque(false);
+        fullNameRow.add(lblFullName);
+        fullNameRow.add(txtFullName);
+        panelWest.add(fullNameRow);
 
-        northPanel.add(northRow3Col1); northPanel.add(northRow3Col2); northPanel.add(northRow3Col3);
-        northPanel.add(northRow3Col4); northPanel.add(northRow3Col5); northPanel.add(northRow3Col6);
+        JPanel emailRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        emailRow.setOpaque(false);
+        emailRow.add(lblEmail);
+        emailRow.add(txtEmail);
+        panelWest.add(emailRow);
 
-        // Wrapper to control north height (tune to match Login)
-        JPanel wrapperNorth = new JPanel(new BorderLayout());
-        wrapperNorth.add(northPanel, BorderLayout.CENTER);
-        wrapperNorth.setPreferredSize(new Dimension(1000, 230)); // adjust as needed
-        add(wrapperNorth, BorderLayout.NORTH);
+        JPanel passRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        passRow.setOpaque(false);
+        passRow.add(lblPassword);
+        passRow.add(txtPassword);
+        panelWest.add(passRow);
 
-        // ---------- CENTER (on background image) ----------
-        // Title on top of center
-        JPanel titlePanel = new JPanel();
-        titlePanel.setOpaque(false);
-        titlePanel.add(lblTitle);
-        backgroundPanel.add(titlePanel, BorderLayout.NORTH);
+        JPanel userTypeRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        userTypeRow.setOpaque(false);
+        userTypeRow.add(lblUserType);
+        userTypeRow.add(comboUserType);
+        panelWest.add(userTypeRow);
 
-        // Form grid
-        JPanel panelCenter = new JPanel(new GridLayout(7, 2, 10, 10));
-        panelCenter.setOpaque(false);
-        panelCenter.add(lblUserName); panelCenter.add(txtUserName);
-        panelCenter.add(lblFullName); panelCenter.add(txtFullName);
-        panelCenter.add(lblEmail); panelCenter.add(txtEmail);
-        panelCenter.add(lblPassword); panelCenter.add(txtPassword);
-        panelCenter.add(lblUserType); panelCenter.add(cbxUserType);
-        panelCenter.add(lblAddress); panelCenter.add(txtAddress);
-        panelCenter.add(lblContact); panelCenter.add(txtContact);
-        backgroundPanel.add(panelCenter, BorderLayout.CENTER);
+        JPanel addressRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        addressRow.setOpaque(false);
+        addressRow.add(lblAddress);
+        addressRow.add(txtAddress);
+        panelWest.add(addressRow);
 
-        // Register button at bottom
-        JPanel panelSouth = new JPanel();
-        panelSouth.setOpaque(false);
-        panelSouth.add(btnRegister);
-        backgroundPanel.add(panelSouth, BorderLayout.SOUTH);
+        JPanel contactRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        contactRow.setOpaque(false);
+        contactRow.add(lblContact);
+        contactRow.add(txtContact);
+        panelWest.add(contactRow);
 
-        add(backgroundPanel, BorderLayout.CENTER);
+        JPanel registerRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        registerRow.setOpaque(false);
+        registerRow.add(btnRegister);
+        panelWest.add(registerRow);
 
-        btnRegister.addActionListener(this);
+        panelWest.add(empty3);
+        panelWest.add(empty4);
+        panelWest.add(empty5);
+        panelWest.add(empty6);
+        panelWest.add(empty7);
+        panelWest.add(empty8);
+        panelWest.add(empty9);
+        panelWest.add(empty10);
+        panelWest.add(empty11);
+        panelWest.add(empty12);
+
+        // --- Add panels to main ---
+        add(panelNorth, BorderLayout.NORTH);
+        add(panelWest, BorderLayout.WEST);
+        add(panelRight, BorderLayout.CENTER);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String userName = txtUserName.getText();
+        String username = txtUserName.getText();
         String fullName = txtFullName.getText();
         String email = txtEmail.getText();
         String password = new String(txtPassword.getPassword());
-        String userType = (String) cbxUserType.getSelectedItem();
+        String userType = (String) comboUserType.getSelectedItem();
         String address = txtAddress.getText();
         String contact = txtContact.getText();
 
-        JOptionPane.showMessageDialog(this,
-                "Registered Successfully:\n" +
-                        "Username: " + userName + "\n" +
-                        "Full Name: " + fullName + "\n" +
-                        "Email: " + email + "\n" +
-                        "Password: " + password + "\n" +
-                        "User Type: " + userType + "\n" +
-                        "Address: " + address + "\n" +
-                        "Contact: " + contact);
+        JOptionPane.showMessageDialog(this, "Register attempt: "
+                + username + " / "
+                + fullName + " / "
+                + email + " / "
+                + password + " / "
+                + userType + " / "
+                + address + " / "
+                + contact);
     }
 
-    // Background painter for the center
     private static class BackgroundPanel extends JPanel {
         private final Image backgroundImage;
+
         public BackgroundPanel(Image backgroundImage) {
             this.backgroundImage = backgroundImage;
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -196,7 +283,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Customer Registration");
+        JFrame frame = new JFrame("Register Customer Page");
         RegisterCustomerPage registerPage = new RegisterCustomerPage();
         registerPage.setGUI();
 

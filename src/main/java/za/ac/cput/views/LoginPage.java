@@ -7,136 +7,195 @@ import java.awt.event.ActionListener;
 
 public class LoginPage extends JPanel implements ActionListener {
 
-    // North rows
-    private JPanel northRow1, northRow2, northRow3;
+    // --- North ---
+    private JPanel panelNorth;
+    private JLabel lblLogo;
+    private JLabel lblTitle;
+    private JButton btnHome;
+    private JButton btnEvents;
+    private JButton btnVenues;
+    private JButton btnSignup;
 
-    // Center login components
-    private JPanel panelTitle, panelUser, panelPass, panelButton;
-    private JTextField txtUsername, txtPassword;
-    private JLabel lblUsername, lblPassword, lblLoginPage;
+    // --- West (login form) ---
+    private JPanel panelWest;
+    private JLabel lblUserName;
+    private JLabel lblPassword;
+    private JTextField txtUserName;
+    private JPasswordField txtPassword;
     private JButton btnLogin;
 
-    private Font ft1;
+    // --- Empty labels for spacing (manually) ---
+    private JLabel empty1;
+    private JLabel empty2;
+    private JLabel empty3;
+    private JLabel empty4;
+    private JLabel empty5;
+    private JLabel empty6;
+    private JLabel empty7;
+    private JLabel empty8;
+    private JLabel empty9;
+    private JLabel empty10;
+
+    // --- Right (background image) ---
+    private BackgroundPanel panelRight;
 
     public LoginPage() {
-        super();
-        ft1 = new Font("Arial", Font.BOLD, 18);
+        super(new BorderLayout());
 
-        // North rows
-        northRow1 = new JPanel(new BorderLayout());
-        northRow2 = new JPanel();
-        northRow3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        // --- North ---
+        panelNorth = new JPanel(new GridLayout(3, 1));
+        panelNorth.setBackground(Color.BLACK);
 
-        // Login panels
-        panelTitle = new JPanel();
-        panelUser = new JPanel();
-        panelPass = new JPanel();
-        panelButton = new JPanel();
+        ImageIcon logoIcon = new ImageIcon(getClass().getResource("/Logo.jpg"));
+        Image logoImg = logoIcon.getImage().getScaledInstance(100, 60, Image.SCALE_SMOOTH);
+        lblLogo = new JLabel(new ImageIcon(logoImg));
+        lblLogo.setHorizontalAlignment(JLabel.CENTER);
 
-        lblLoginPage = new JLabel("Login Page", SwingConstants.CENTER);
-        lblUsername = new JLabel("Username:");
+        lblTitle = new JLabel("Login Page", JLabel.CENTER);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        lblTitle.setForeground(Color.WHITE);
+
+        btnHome = new JButton("Home");
+        btnEvents = new JButton("Current Events");
+        btnVenues = new JButton("Venues");
+        btnSignup = new JButton("Login/SignUp");
+
+        btnHome.setBackground(new Color(50, 50, 50));
+        btnHome.setForeground(Color.WHITE);
+        btnHome.setFocusPainted(false);
+        btnHome.setBorderPainted(false);
+        btnHome.setFont(new Font("Arial", Font.BOLD, 14));
+        btnHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btnEvents.setBackground(new Color(50, 50, 50));
+        btnEvents.setForeground(Color.WHITE);
+        btnEvents.setFocusPainted(false);
+        btnEvents.setBorderPainted(false);
+        btnEvents.setFont(new Font("Arial", Font.BOLD, 14));
+        btnEvents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btnVenues.setBackground(new Color(50, 50, 50));
+        btnVenues.setForeground(Color.WHITE);
+        btnVenues.setFocusPainted(false);
+        btnVenues.setBorderPainted(false);
+        btnVenues.setFont(new Font("Arial", Font.BOLD, 14));
+        btnVenues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btnSignup.setBackground(new Color(50, 50, 50));
+        btnSignup.setForeground(Color.WHITE);
+        btnSignup.setFocusPainted(false);
+        btnSignup.setBorderPainted(false);
+        btnSignup.setFont(new Font("Arial", Font.BOLD, 14));
+        btnSignup.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // --- West (login form) ---
+        panelWest = new JPanel();
+        panelWest.setBackground(Color.BLACK);
+        panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
+
+        lblUserName = new JLabel("Username:");
+        lblUserName.setForeground(Color.WHITE);
+        txtUserName = new JTextField(15);
+
         lblPassword = new JLabel("Password:");
-        txtUsername = new JTextField(15);
-        txtPassword = new JTextField(15);
+        lblPassword.setForeground(Color.WHITE);
+        txtPassword = new JPasswordField(15);
+
         btnLogin = new JButton("Login");
         btnLogin.addActionListener(this);
+
+        // --- Empty labels manually ---
+        empty1 = new JLabel();
+        empty2 = new JLabel();
+        empty3 = new JLabel();
+        empty4 = new JLabel();
+        empty5 = new JLabel();
+        empty6 = new JLabel();
+        empty7 = new JLabel();
+        empty8 = new JLabel();
+        empty9 = new JLabel();
+        empty10 = new JLabel();
+
+        // --- Right (background image) ---
+        ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
+        panelRight = new BackgroundPanel(bgIcon.getImage());
     }
 
     public void setGUI() {
-        Color darkGray = new Color(25,25,25);
-        Color black = new Color(0,0,0);
 
-        // ---------- NORTH ----------
-        JPanel northWrapper = new JPanel();
-        northWrapper.setLayout(new BoxLayout(northWrapper, BoxLayout.Y_AXIS));
+        // --- North layout ---
+        panelNorth.add(lblLogo);
 
-        // Row 1: Logo
-        northRow1.setBackground(darkGray);
-        ImageIcon icon = new ImageIcon(getClass().getResource("/Logo.jpg"));
-        JLabel logo = new JLabel(icon);
-        logo.setHorizontalAlignment(SwingConstants.CENTER);
-        logo.setVerticalAlignment(SwingConstants.CENTER);
-        northRow1.add(logo, BorderLayout.CENTER);
-        northRow1.setPreferredSize(new Dimension(1000, 60));
-        northWrapper.add(northRow1);
+        JPanel rowTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        rowTitle.setOpaque(false);
+        rowTitle.add(lblTitle);
+        panelNorth.add(rowTitle);
 
-        // Row 2: Separator bar
-        northRow2.setBackground(black);
-        northRow2.setPreferredSize(new Dimension(1000, 20));
-        northWrapper.add(northRow2);
+        JPanel rowNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+        rowNav.setOpaque(false);
+        rowNav.add(btnHome);
+        rowNav.add(btnEvents);
+        rowNav.add(btnVenues);
+        rowNav.add(btnSignup);
+        panelNorth.add(rowNav);
 
-        // Row 3: Buttons
-        northRow3.setBackground(darkGray);
-        JButton btnHome = new JButton("Home");
-        JButton btnEvents = new JButton("Current Events");
-        JButton btnVenues = new JButton("Venues");
-        JButton btnLoginSignup = new JButton("Login/SignUp");
+        // --- West layout ---
+        panelWest.add(empty1);
+        panelWest.add(empty2);
 
-        JButton[] buttons = {btnHome, btnEvents, btnVenues, btnLoginSignup};
-        Color buttonColor = new Color(50,50,50);
-        Color buttonText = Color.WHITE;
-        Font btnFont = new Font("Arial", Font.BOLD, 14);
+        JPanel userRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        userRow.setOpaque(false);
+        userRow.add(lblUserName);
+        userRow.add(txtUserName);
+        panelWest.add(userRow);
 
-        for (JButton btn : buttons) {
-            btn.setBackground(buttonColor);
-            btn.setForeground(buttonText);
-            btn.setFocusPainted(false);
-            btn.setBorderPainted(false);
-            btn.setFont(btnFont);
-            northRow3.add(btn);
-        }
-        northRow3.setPreferredSize(new Dimension(1000, 50));
-        northWrapper.add(northRow3);
+        JPanel passRow = new JPanel(new GridLayout(1, 2, 5, 5));
+        passRow.setOpaque(false);
+        passRow.add(lblPassword);
+        passRow.add(txtPassword);
+        panelWest.add(passRow);
 
-        // ---------- CENTER ----------
-        JPanel centerPanel = new JPanel() {
-            private Image background = new ImageIcon(getClass().getResource("/background.jpg")).getImage();
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        centerPanel.setLayout(new BorderLayout());
+        JPanel loginRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        loginRow.setOpaque(false);
+        loginRow.add(btnLogin);
+        panelWest.add(loginRow);
 
-        // Original login panel
-        JPanel loginPanel = new JPanel();
-        loginPanel.setOpaque(false);
-        loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
+        panelWest.add(empty3);
+        panelWest.add(empty4);
+        panelWest.add(empty5);
+        panelWest.add(empty6);
+        panelWest.add(empty7);
+        panelWest.add(empty8);
+        panelWest.add(empty9);
+        panelWest.add(empty10);
 
-        panelTitle.setOpaque(false); panelUser.setOpaque(false);
-        panelPass.setOpaque(false); panelButton.setOpaque(false);
-
-        lblLoginPage.setFont(ft1); lblLoginPage.setForeground(Color.WHITE);
-
-        panelTitle.add(lblLoginPage);
-        panelUser.add(lblUsername); panelUser.add(txtUsername);
-        panelPass.add(lblPassword); panelPass.add(txtPassword);
-        panelButton.add(btnLogin);
-
-        loginPanel.add(Box.createVerticalGlue());
-        loginPanel.add(panelTitle);
-        loginPanel.add(Box.createVerticalStrut(15));
-        loginPanel.add(panelUser);
-        loginPanel.add(Box.createVerticalStrut(10));
-        loginPanel.add(panelPass);
-        loginPanel.add(Box.createVerticalStrut(15));
-        loginPanel.add(panelButton);
-        loginPanel.add(Box.createVerticalGlue());
-
-        centerPanel.add(loginPanel, BorderLayout.WEST);
-
-        // ---------- ADD TO MAIN ----------
-        setLayout(new BorderLayout());
-        add(northWrapper, BorderLayout.NORTH);
-        add(centerPanel, BorderLayout.CENTER);
+        // --- Add panels to main ---
+        add(panelNorth, BorderLayout.NORTH);
+        add(panelWest, BorderLayout.WEST);
+        add(panelRight, BorderLayout.CENTER);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String username = txtUsername.getText();
-        String password = txtPassword.getText();
-        JOptionPane.showMessageDialog(this,"Login attempt: " + username + " / " + password);
+        String username = txtUserName.getText();
+        String password = new String(txtPassword.getPassword());
+        JOptionPane.showMessageDialog(this, "Login attempt: " + username + " / " + password);
+    }
+
+    private static class BackgroundPanel extends JPanel {
+        private final Image backgroundImage;
+
+        public BackgroundPanel(Image backgroundImage) {
+            this.backgroundImage = backgroundImage;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -145,7 +204,7 @@ public class LoginPage extends JPanel implements ActionListener {
         loginPage.setGUI();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000,700);
+        frame.setSize(1000, 700);
         frame.add(loginPage);
         frame.setVisible(true);
     }
