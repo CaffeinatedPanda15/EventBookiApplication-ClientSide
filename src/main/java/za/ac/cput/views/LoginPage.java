@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class LoginPage extends JPanel implements ActionListener {
 
@@ -59,6 +63,11 @@ public class LoginPage extends JPanel implements ActionListener {
         btnEvents = new JButton("Current Events");
         btnVenues = new JButton("Venues");
         btnSignup = new JButton("Login/SignUp");
+        btnHome.addActionListener(this);
+        btnEvents.addActionListener(this);
+        btnVenues.addActionListener(this);
+        btnSignup.addActionListener(this);
+
 
         btnHome.setBackground(new Color(50, 50, 50));
         btnHome.setForeground(Color.WHITE);
@@ -175,12 +184,49 @@ public class LoginPage extends JPanel implements ActionListener {
         add(panelRight, BorderLayout.CENTER);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void loginCustomer() {
+    try {
         String username = txtUserName.getText();
         String password = new String(txtPassword.getPassword());
-        JOptionPane.showMessageDialog(this, "Login attempt: " + username + " / " + password);
+
+        String json = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", username, password);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8080/customers/login"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            JOptionPane.showMessageDialog(this, "✅ Login successful!\nWelcome " + username);
+        } else {
+            JOptionPane.showMessageDialog(this, "❌ Login failed! Check username or password.");
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "⚠️ Error: " + ex.getMessage());
     }
+}
+
+private void switchToRegisterCustomerPage() {
+    // Get the top-level JFrame that contains this panel
+    JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+    topFrame.getContentPane().removeAll(); // remove the current LoginPage panel
+
+    // Create RegisterCustomerPage panel and set it up
+    RegisterCustomerPage registerPage = new RegisterCustomerPage();
+    registerPage.setGUI(); // call the GUI setup method if it exists
+
+    // Add the RegisterCustomerPage panel to the frame
+    topFrame.add(registerPage);
+    topFrame.revalidate(); // refresh the fr
+    topFrame.repaint();
+}
+
+
 
     private static class BackgroundPanel extends JPanel {
         private final Image backgroundImage;
@@ -197,6 +243,20 @@ public class LoginPage extends JPanel implements ActionListener {
             }
         }
     }
+
+@Override
+public void actionPerformed(ActionEvent e) {
+    Object source = e.getSource();
+
+    if (source == btnLogin) {
+        loginCustomer();
+    } else if (source == btnSignup) {
+        switchToRegisterCustomerPage();
+    }
+
+}
+
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Login Page");
