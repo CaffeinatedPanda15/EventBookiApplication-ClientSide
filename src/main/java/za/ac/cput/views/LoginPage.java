@@ -222,9 +222,10 @@ private void switchToRegisterCustomerPage() {
 
     // Add the RegisterCustomerPage panel to the frame
     topFrame.add(registerPage);
-    topFrame.revalidate(); // refresh the frame
+    topFrame.revalidate(); // refresh the fr
     topFrame.repaint();
 }
+
 
 
     private static class BackgroundPanel extends JPanel {
@@ -252,6 +253,7 @@ public void actionPerformed(ActionEvent e) {
     } else if (source == btnSignup) {
         switchToRegisterCustomerPage();
     }
+
 }
 
 
