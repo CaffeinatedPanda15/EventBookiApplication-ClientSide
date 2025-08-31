@@ -2,7 +2,7 @@
 //STUDENT :221084096
 //Group kN13
 
-package za.ac.cput.factory;
+package za.ac.cput.factory.eventfactories;
 
 import za.ac.cput.domain.Payment;
 import za.ac.cput.util.Helper;
@@ -15,21 +15,8 @@ public class PaymentFactory {
 
     public static Payment createPayment(int paymentID, double amount, Date paymentDate,
                                         String paymentMethod, Payment.Status status) {
-
-        // Validate inputs using Helper
-        if (Helper.isZeroOrNull(paymentID) || amount <= 0 ||
-            Helper.isNullorEmpty(paymentMethod)) {
+    if (paymentID <= 0 || amount <= 0 || paymentDate == null || Helper.isNullorEmpty(paymentMethod) || status == null) {
             return null;
-        }
-
-        // Default to current date if none provided
-        if (paymentDate == null) {
-            paymentDate = new Date();
-        }
-
-        // Default to Pending if status not provided
-        if (status == null) {
-            status = Payment.Status.Pending;
         }
 
         return new Payment.Builder()

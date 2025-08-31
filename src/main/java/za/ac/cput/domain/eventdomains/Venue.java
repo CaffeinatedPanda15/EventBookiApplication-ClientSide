@@ -1,12 +1,19 @@
 package za.ac.cput.domain.eventdomains;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Venue {
+
+    @Id
     protected int venueId;
     protected String venueName;
     protected String venueAddress;
     protected int venueCapacity;
 
-    private Venue () {
+    public Venue () {
     }
 
     private Venue(Builder builder) {

@@ -1,33 +1,40 @@
 package za.ac.cput.domain.endusers;
 
+
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class User {
-    private static String userName;
-    private static String fullname;
-    private static String emailAddress;
-    private static String password;
-    private static UserType userType;
+
+    @Id
+    private String userName;
+    private String fullname;
+    private String emailAddress;
+    private String password;
+    private UserType userType;
 
 
     public User() {
     }
 
-    public static String getUserName() {
+    public  String getUserName() {
         return userName;
     }
 
-    public static String getFullname() {
+    public  String getFullname() {
         return fullname;
     }
 
-    public static String getEmailAddress() {
+    public String getEmailAddress() {
         return emailAddress;
     }
 
-    public static String getPassword() {
+    public  String getPassword() {
         return password;
     }
 
-    public static UserType getUserType() {
+    public  UserType getUserType() {
         return userType;
     }
 

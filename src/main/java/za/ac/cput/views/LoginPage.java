@@ -11,24 +11,24 @@ import java.net.http.HttpResponse;
 
 public class LoginPage extends JPanel implements ActionListener {
 
-    // --- North ---
+    // North Panel
     private JPanel panelNorth;
-    private JLabel lblLogo;
-    private JLabel lblTitle;
-    private JButton btnHome;
-    private JButton btnEvents;
-    private JButton btnVenues;
-    private JButton btnSignup;
+    private JLabel labelLogo;
+    private JLabel labelTitle;
+    private JButton buttonHome;
+    private JButton buttonEvents;
+    private JButton buttonVenues;
+    private JButton buttonSignup;
 
-    // --- West (login form) ---
+    // West/Login Panel
     private JPanel panelWest;
-    private JLabel lblUserName;
-    private JLabel lblPassword;
-    private JTextField txtUserName;
+    private JLabel labelUserName;
+    private JLabel labelPassword;
+    private JTextField tfieldUserName;
     private JPasswordField txtPassword;
-    private JButton btnLogin;
+    private JButton buttonLogin;
 
-    // --- Empty labels for spacing (manually) ---
+    // Spacing panels
     private JLabel empty1;
     private JLabel empty2;
     private JLabel empty3;
@@ -40,80 +40,87 @@ public class LoginPage extends JPanel implements ActionListener {
     private JLabel empty9;
     private JLabel empty10;
 
-    // --- Right (background image) ---
+
     private BackgroundPanel panelRight;
 
     public LoginPage() {
         super(new BorderLayout());
 
-        // --- North ---
+        // north panel
         panelNorth = new JPanel(new GridLayout(3, 1));
         panelNorth.setBackground(Color.BLACK);
 
         ImageIcon logoIcon = new ImageIcon(getClass().getResource("/Logo.jpg"));
         Image logoImg = logoIcon.getImage().getScaledInstance(100, 60, Image.SCALE_SMOOTH);
-        lblLogo = new JLabel(new ImageIcon(logoImg));
-        lblLogo.setHorizontalAlignment(JLabel.CENTER);
+        labelLogo = new JLabel(new ImageIcon(logoImg));
+        labelLogo.setHorizontalAlignment(JLabel.CENTER);
 
-        lblTitle = new JLabel("Login Page", JLabel.CENTER);
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblTitle.setForeground(Color.WHITE);
+        labelTitle = new JLabel("Login Page", JLabel.CENTER);
+        labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        labelTitle.setForeground(Color.WHITE);
 
-        btnHome = new JButton("Home");
-        btnEvents = new JButton("Current Events");
-        btnVenues = new JButton("Venues");
-        btnSignup = new JButton("Login/SignUp");
-        btnHome.addActionListener(this);
-        btnEvents.addActionListener(this);
-        btnVenues.addActionListener(this);
-        btnSignup.addActionListener(this);
+        buttonHome = new JButton("Home");
+        buttonHome.setBackground(new Color(50, 50, 50));
+        buttonHome.setForeground(Color.WHITE);
+        buttonHome.setFocusPainted(false);
+        buttonHome.setBorderPainted(false);
+        buttonHome.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
-        btnHome.setBackground(new Color(50, 50, 50));
-        btnHome.setForeground(Color.WHITE);
-        btnHome.setFocusPainted(false);
-        btnHome.setBorderPainted(false);
-        btnHome.setFont(new Font("Arial", Font.BOLD, 14));
-        btnHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        buttonEvents = new JButton("Current Events");
+        buttonEvents.setBackground(new Color(50, 50, 50));
+        buttonEvents.setForeground(Color.WHITE);
+        buttonEvents.setFocusPainted(false);
+        buttonEvents.setBorderPainted(false);
+        buttonEvents.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonEvents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        btnEvents.setBackground(new Color(50, 50, 50));
-        btnEvents.setForeground(Color.WHITE);
-        btnEvents.setFocusPainted(false);
-        btnEvents.setBorderPainted(false);
-        btnEvents.setFont(new Font("Arial", Font.BOLD, 14));
-        btnEvents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        btnVenues.setBackground(new Color(50, 50, 50));
-        btnVenues.setForeground(Color.WHITE);
-        btnVenues.setFocusPainted(false);
-        btnVenues.setBorderPainted(false);
-        btnVenues.setFont(new Font("Arial", Font.BOLD, 14));
-        btnVenues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        buttonVenues = new JButton("Venues");
+        buttonVenues.setBackground(new Color(50, 50, 50));
+        buttonVenues.setForeground(Color.WHITE);
+        buttonVenues.setFocusPainted(false);
+        buttonVenues.setBorderPainted(false);
+        buttonVenues.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonVenues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        btnSignup.setBackground(new Color(50, 50, 50));
-        btnSignup.setForeground(Color.WHITE);
-        btnSignup.setFocusPainted(false);
-        btnSignup.setBorderPainted(false);
-        btnSignup.setFont(new Font("Arial", Font.BOLD, 14));
-        btnSignup.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        // --- West (login form) ---
+        buttonSignup = new JButton("Login/SignUp");
+        buttonSignup.setBackground(new Color(50, 50, 50));
+        buttonSignup.setForeground(Color.WHITE);
+        buttonSignup.setFocusPainted(false);
+        buttonSignup.setBorderPainted(false);
+        buttonSignup.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonSignup.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+
+        //add actionlisytener
+        buttonHome.addActionListener(this);
+        buttonEvents.addActionListener(this);
+        buttonVenues.addActionListener(this);
+        buttonSignup.addActionListener(this);
+
+
+
+
+        // West/Login Panel
         panelWest = new JPanel();
         panelWest.setBackground(Color.BLACK);
         panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
 
-        lblUserName = new JLabel("Username:");
-        lblUserName.setForeground(Color.WHITE);
-        txtUserName = new JTextField(15);
+        labelUserName = new JLabel("Username:");
+        labelUserName.setForeground(Color.WHITE);
+        tfieldUserName = new JTextField(15);
 
-        lblPassword = new JLabel("Password:");
-        lblPassword.setForeground(Color.WHITE);
+        labelPassword = new JLabel("Password:");
+        labelPassword.setForeground(Color.WHITE);
         txtPassword = new JPasswordField(15);
 
-        btnLogin = new JButton("Login");
-        btnLogin.addActionListener(this);
+        buttonLogin = new JButton("Login");
+        buttonLogin.addActionListener(this);
 
-        // --- Empty labels manually ---
+        // empty panels for spacing
         empty1 = new JLabel();
         empty2 = new JLabel();
         empty3 = new JLabel();
@@ -125,48 +132,48 @@ public class LoginPage extends JPanel implements ActionListener {
         empty9 = new JLabel();
         empty10 = new JLabel();
 
-        // --- Right (background image) ---
+        // background image
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
         panelRight = new BackgroundPanel(bgIcon.getImage());
     }
 
     public void setGUI() {
 
-        // --- North layout ---
-        panelNorth.add(lblLogo);
+        //North
+        panelNorth.add(labelLogo);
 
         JPanel rowTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
         rowTitle.setOpaque(false);
-        rowTitle.add(lblTitle);
+        rowTitle.add(labelTitle);
         panelNorth.add(rowTitle);
 
         JPanel rowNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         rowNav.setOpaque(false);
-        rowNav.add(btnHome);
-        rowNav.add(btnEvents);
-        rowNav.add(btnVenues);
-        rowNav.add(btnSignup);
+        rowNav.add(buttonHome);
+        rowNav.add(buttonEvents);
+        rowNav.add(buttonVenues);
+        rowNav.add(buttonSignup);
         panelNorth.add(rowNav);
 
-        // --- West layout ---
+        // West
         panelWest.add(empty1);
         panelWest.add(empty2);
 
         JPanel userRow = new JPanel(new GridLayout(1, 2, 5, 5));
         userRow.setOpaque(false);
-        userRow.add(lblUserName);
-        userRow.add(txtUserName);
+        userRow.add(labelUserName);
+        userRow.add(tfieldUserName);
         panelWest.add(userRow);
 
         JPanel passRow = new JPanel(new GridLayout(1, 2, 5, 5));
         passRow.setOpaque(false);
-        passRow.add(lblPassword);
+        passRow.add(labelPassword);
         passRow.add(txtPassword);
         panelWest.add(passRow);
 
         JPanel loginRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginRow.setOpaque(false);
-        loginRow.add(btnLogin);
+        loginRow.add(buttonLogin);
         panelWest.add(loginRow);
 
         panelWest.add(empty3);
@@ -178,7 +185,7 @@ public class LoginPage extends JPanel implements ActionListener {
         panelWest.add(empty9);
         panelWest.add(empty10);
 
-        // --- Add panels to main ---
+        // add panels to main panel
         add(panelNorth, BorderLayout.NORTH);
         add(panelWest, BorderLayout.WEST);
         add(panelRight, BorderLayout.CENTER);
@@ -186,7 +193,7 @@ public class LoginPage extends JPanel implements ActionListener {
 
     public void loginCustomer() {
     try {
-        String username = txtUserName.getText();
+        String username = tfieldUserName.getText();
         String password = new String(txtPassword.getPassword());
 
         String json = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", username, password);
@@ -248,9 +255,9 @@ private void switchToRegisterCustomerPage() {
 public void actionPerformed(ActionEvent e) {
     Object source = e.getSource();
 
-    if (source == btnLogin) {
+    if (source == buttonLogin) {
         loginCustomer();
-    } else if (source == btnSignup) {
+    } else if (source == buttonSignup) {
         switchToRegisterCustomerPage();
     }
 

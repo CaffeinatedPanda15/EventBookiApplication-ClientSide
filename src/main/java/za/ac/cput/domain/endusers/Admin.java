@@ -1,15 +1,18 @@
 package za.ac.cput.domain.endusers;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Admin extends User {
     public static Object UserType;
     private String address;
     private String contactNumber;
 
-    private Admin() {
+    public Admin() {
 
     }
 
-    public Admin(Builder build) {
+    private Admin(Builder build) {
         super.setUserName(build.userName);
         super.setFullname(build.fullname);
         super.setEmailAddress(build.emailAddress);
@@ -30,6 +33,11 @@ public class Admin extends User {
     @Override
     public String toString() {
         return "Admin{" +
+                "userName=" + getUserName() +
+                ", fullname=" + getFullname() +
+                ", emailAddress=" + getEmailAddress() +
+                ", password=" + getPassword() +
+                ", userType=" + getUserType() +
                 "address='" + address + '\'' +
                 ", contactNumber='" + contactNumber + '\'' +
                 '}';
@@ -40,7 +48,7 @@ public class Admin extends User {
         private String fullname;
         private String emailAddress;
         private String password;
-        private za.ac.cput.domain.endusers.UserType userType;
+        private UserType userType;
         private String address;
         private String contactNumber;
 
@@ -83,7 +91,7 @@ public class Admin extends User {
             return new Admin(this);
         }
 
-        public Builder copy(Customer admin) {
+        public Builder copy(Admin admin) {
             this.userName = admin.getUserName();
             this.fullname = admin.getFullname();
             this.emailAddress = admin.getEmailAddress();

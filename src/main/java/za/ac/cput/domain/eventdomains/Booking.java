@@ -1,24 +1,28 @@
+
 package za.ac.cput.domain.eventdomains;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import za.ac.cput.domain.endusers.Customer;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class Booking extends Customer {
+
+    @Id
     private String bookingId;
-    private int customerID;
     private int ticketID;
     private LocalDateTime bookingDate  ;
     private String status;
 
-    private Booking(Customer.Builder builder) {
-        super(builder);
+    public Booking() {
+
     }
 
     public Booking(Builder builder) {
-        super(builder);
         this.bookingId = builder.bookingID;
-        this.customerID = builder.customerID;;
+        super.setUserName(String.valueOf(builder.customerID));;
         this.ticketID = builder.customerID;
         this.bookingDate = builder.bookingDate;
         this.status = builder.status;
@@ -28,9 +32,6 @@ public class Booking extends Customer {
         return bookingId;
     }
 
-    public int getCustomerID() {
-        return customerID;
-    }
 
     public int getTicketID() {
         return ticketID;
@@ -47,31 +48,20 @@ public class Booking extends Customer {
     @Override
     public String toString() {
         return "Booking{" +
-                ", customerID=" + customerID +
+                ", customerID=" + getUserName() +
                 ", ticketID=" + ticketID +
                 ", bookingDate=" + bookingDate +
                 ", status='" + status + '\'' +
                 '}';
     }
 
-    public static class Builder extends Customer.Builder {
+    public static class Builder {
         private String bookingID;
         private int customerID;
         private int ticketID;
         private LocalDateTime bookingDate  ;
         private String status;
 
-        public Builder(String bookingID, int customerID, int ticketID, LocalDateTime bookingDate, String status) {
-            this.bookingID = bookingID;
-            this.customerID = customerID;
-            this.ticketID = ticketID;
-            this.bookingDate = bookingDate;
-            this.status = status;
-        }
-
-        public Builder() {
-
-        }
 
         public Builder setBookingID(String bookingID) {
             this.bookingID = bookingID;
@@ -111,4 +101,4 @@ public class Booking extends Customer {
             return new Booking(this);
         }
     }
-}
+}//end of class

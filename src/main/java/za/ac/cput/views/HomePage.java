@@ -5,91 +5,94 @@ import java.awt.*;
 
 public class HomePage extends JPanel {
 
-    // --- North ---
-    protected JPanel panelNorth;
-    protected JLabel lblLogo;
-    protected JLabel lblTitle;
-    protected JButton btnHome;
-    protected JButton btnEvents;
-    protected JButton btnVenues;
-    protected JButton btnOther;
+    // North
+    private JPanel panelNorth;
+    private JLabel labelLogo;
+    private JLabel labelTitle;
+    private JButton buttonHome;
+    private JButton buttonEvents;
+    private JButton buttonVenues;
+    private JButton buttonOther;
 
-    // --- West (form panel) ---
-    protected JPanel panelWest;
+    // West
+    private JPanel panelWest;
 
-    // --- Empty labels for spacing (manually) ---
-    protected JLabel empty1;
-    protected JLabel empty2;
-    protected JLabel empty3;
-    protected JLabel empty4;
-    protected JLabel empty5;
-    protected JLabel empty6;
-    protected JLabel empty7;
-    protected JLabel empty8;
-    protected JLabel empty9;
-    protected JLabel empty10;
-    protected JLabel empty11;
-    protected JLabel empty12;
+    // Empty panels
+    private JLabel empty1;
+    private JLabel empty2;
+    private JLabel empty3;
+    private JLabel empty4;
+    private JLabel empty5;
+    private JLabel empty6;
+    private JLabel empty7;
+    private JLabel empty8;
+    private JLabel empty9;
+    private JLabel empty10;
+    private JLabel empty11;
+    private JLabel empty12;
 
-    // --- Right (background image) ---
-    protected BackgroundPanel panelRight;
+    // background image
+    private BackgroundPanel panelRight;
 
     public HomePage() {
         super(new BorderLayout());
 
-        // --- North ---
+        // North
         panelNorth = new JPanel(new GridLayout(3, 1));
         panelNorth.setBackground(Color.BLACK);
 
         ImageIcon logoIcon = new ImageIcon(getClass().getResource("/Logo.jpg"));
         Image logoImg = logoIcon.getImage().getScaledInstance(100, 60, Image.SCALE_SMOOTH);
-        lblLogo = new JLabel(new ImageIcon(logoImg));
-        lblLogo.setHorizontalAlignment(JLabel.CENTER);
+        labelLogo = new JLabel(new ImageIcon(logoImg));
+        labelLogo.setHorizontalAlignment(JLabel.CENTER);
 
-        lblTitle = new JLabel("Homepage", JLabel.CENTER);
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblTitle.setForeground(Color.WHITE);
+        labelTitle = new JLabel("Homepage", JLabel.CENTER);
+        labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        labelTitle.setForeground(Color.WHITE);
 
-        btnHome = new JButton("Home");
-        btnEvents = new JButton("Current Events");
-        btnVenues = new JButton("Venues");
-        btnOther = new JButton("Other");
+        buttonHome = new JButton("Home");
+        buttonHome.setBackground(new Color(50, 50, 50));
+        buttonHome.setForeground(Color.WHITE);
+        buttonHome.setFocusPainted(false);
+        buttonHome.setBorderPainted(false);
+        buttonHome.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        // Style buttons manually
-        btnHome.setBackground(new Color(50, 50, 50));
-        btnHome.setForeground(Color.WHITE);
-        btnHome.setFocusPainted(false);
-        btnHome.setBorderPainted(false);
-        btnHome.setFont(new Font("Arial", Font.BOLD, 14));
-        btnHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        btnEvents.setBackground(new Color(50, 50, 50));
-        btnEvents.setForeground(Color.WHITE);
-        btnEvents.setFocusPainted(false);
-        btnEvents.setBorderPainted(false);
-        btnEvents.setFont(new Font("Arial", Font.BOLD, 14));
-        btnEvents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        buttonEvents = new JButton("Current Events");
+        buttonEvents.setBackground(new Color(50, 50, 50));
+        buttonEvents.setForeground(Color.WHITE);
+        buttonEvents.setFocusPainted(false);
+        buttonEvents.setBorderPainted(false);
+        buttonEvents.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonEvents.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        btnVenues.setBackground(new Color(50, 50, 50));
-        btnVenues.setForeground(Color.WHITE);
-        btnVenues.setFocusPainted(false);
-        btnVenues.setBorderPainted(false);
-        btnVenues.setFont(new Font("Arial", Font.BOLD, 14));
-        btnVenues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        btnOther.setBackground(new Color(50, 50, 50));
-        btnOther.setForeground(Color.WHITE);
-        btnOther.setFocusPainted(false);
-        btnOther.setBorderPainted(false);
-        btnOther.setFont(new Font("Arial", Font.BOLD, 14));
-        btnOther.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        buttonVenues = new JButton("Venues");
+        buttonVenues.setBackground(new Color(50, 50, 50));
+        buttonVenues.setForeground(Color.WHITE);
+        buttonVenues.setFocusPainted(false);
+        buttonVenues.setBorderPainted(false);
+        buttonVenues.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonVenues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        // --- West (form panel) ---
+
+        buttonOther = new JButton("Other");
+        buttonOther.setBackground(new Color(50, 50, 50));
+        buttonOther.setForeground(Color.WHITE);
+        buttonOther.setFocusPainted(false);
+        buttonOther.setBorderPainted(false);
+        buttonOther.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonOther.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+
+
+        // West
         panelWest = new JPanel();
         panelWest.setBackground(Color.BLACK);
         panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
 
-        // Empty labels manually
+        // Empty labels
         empty1 = new JLabel();
         empty2 = new JLabel();
         empty3 = new JLabel();
@@ -103,29 +106,29 @@ public class HomePage extends JPanel {
         empty11 = new JLabel();
         empty12 = new JLabel();
 
-        // --- Right (background image) ---
+        //Right
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
         panelRight = new BackgroundPanel(bgIcon.getImage());
     }
 
     public void setGUI() {
-        // --- North layout ---
-        panelNorth.add(lblLogo);
+        //North
+        panelNorth.add(labelLogo);
 
         JPanel rowTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
         rowTitle.setOpaque(false);
-        rowTitle.add(lblTitle);
+        rowTitle.add(labelTitle);
         panelNorth.add(rowTitle);
 
-        JPanel rowNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-        rowNav.setOpaque(false);
-        rowNav.add(btnHome);
-        rowNav.add(btnEvents);
-        rowNav.add(btnVenues);
-        rowNav.add(btnOther);
-        panelNorth.add(rowNav);
+        JPanel navigationRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+        navigationRow.setOpaque(false);
+        navigationRow.add(buttonHome);
+        navigationRow.add(buttonEvents);
+        navigationRow.add(buttonVenues);
+        navigationRow.add(buttonOther);
+        panelNorth.add(navigationRow);
 
-        // --- West layout ---
+        //West
         panelWest.add(empty1);
         panelWest.add(empty2);
         panelWest.add(empty3);
@@ -139,14 +142,14 @@ public class HomePage extends JPanel {
         panelWest.add(empty11);
         panelWest.add(empty12);
 
-        // --- Add panels to main ---
+        //Add panels to main
         add(panelNorth, BorderLayout.NORTH);
         add(panelWest, BorderLayout.WEST);
         add(panelRight, BorderLayout.CENTER);
     }
 
-    // --- Background panel class ---
-    protected static class BackgroundPanel extends JPanel {
+    // Background panel
+    public static class BackgroundPanel extends JPanel {
         private final Image backgroundImage;
 
         public BackgroundPanel(Image backgroundImage) {
@@ -154,7 +157,7 @@ public class HomePage extends JPanel {
         }
 
         @Override
-        protected void paintComponent(Graphics g) {
+        public void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (backgroundImage != null) {
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
@@ -162,7 +165,7 @@ public class HomePage extends JPanel {
         }
     }
 
-    // --- Test the base page ---
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Base Page");
         HomePage basePage = new HomePage();

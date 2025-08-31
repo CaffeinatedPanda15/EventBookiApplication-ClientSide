@@ -1,15 +1,19 @@
 package za.ac.cput.domain.endusers;
 
+import jakarta.persistence.Entity;
+
+
+@Entity
 public class Customer extends User {
-    public static Object UserType;
-    private static String address;
-    private static String contactNumber;
 
-    private Customer() {
 
+    private String address;
+    private String contactNumber;
+
+    public Customer() {
     }
 
-    public Customer(Builder build) {
+    private Customer(Builder build) {
         super.setUserName(build.userName);
         super.setFullname(build.fullname);
         super.setEmailAddress(build.emailAddress);
@@ -19,19 +23,24 @@ public class Customer extends User {
         this.contactNumber = build.contactNumber;
     }
 
-    public static String getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public static String getContactNumber() {
+    public String getContactNumber() {
         return contactNumber;
     }
 
     @Override
     public String toString() {
-        return "Admin{" +
-                "address='" + address + '\'' +
-                ", contactNumber='" + contactNumber + '\'' +
+        return "Customer{" +
+                "userName=" + getUserName() +
+                ", fullname=" + getFullname() +
+                ", emailAddress=" + getEmailAddress() +
+                ", password=" + getPassword() +
+                ", userType=" + getUserType() +
+                ", address=" + address +
+                ", contactNumber=" + contactNumber +
                 '}';
     }
 
@@ -40,7 +49,7 @@ public class Customer extends User {
         private String fullname;
         private String emailAddress;
         private String password;
-        private za.ac.cput.domain.endusers.UserType userType;
+        private UserType userType;
         private String address;
         private String contactNumber;
 
@@ -83,17 +92,15 @@ public class Customer extends User {
             return new Customer(this);
         }
 
-        public Builder copy(Customer admin) {
-            this.userName = Customer.getUserName();
-            this.fullname = Customer.getFullname();
-            this.emailAddress = Customer.getEmailAddress();
-            this.password = Customer.getPassword();
-            this.userType = Customer.getUserType();
-            this.address = Customer.getAddress();
-            this.contactNumber = Customer.getContactNumber();
+        public Builder copy(Customer customer) {
+            this.userName = customer.getUserName();
+            this.fullname = customer.getFullname();
+            this.emailAddress = customer.getEmailAddress();
+            this.password = customer.getPassword();
+            this.userType = customer.getUserType();
+            this.address = customer.getAddress();
+            this.contactNumber = customer.getContactNumber();
             return this;
         }
-
-
-    }//end of builder class
-}//end of class
+    }
+}
