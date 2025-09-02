@@ -192,44 +192,59 @@ public class LoginPage extends JPanel implements ActionListener {
     }
 
     public void loginCustomer() {
-    try {
-        String username = tfieldUserName.getText();
-        String password = new String(txtPassword.getPassword());
+        try {
+            String email = tfieldUserName.getText(); // assuming email is the login field
+            String password = new String(txtPassword.getPassword());
 
-        String json = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", username, password);
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("http://localhost:8080/customers/login"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
+            String json = String.format("{\"emailAddress\":\"%s\",\"password\":\"%s\"}", email, password);
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() == 200) {
-            JOptionPane.showMessageDialog(this, "✅ Login successful!\nWelcome " + username);
-        } else {
-            JOptionPane.showMessageDialog(this, "❌ Login failed! Check username or password.");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/customer/login"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                org.json.JSONObject jsonObj = new org.json.JSONObject(responseBody);
+                String fullname = jsonObj.getString("fullname");
+
+                JOptionPane.showMessageDialog(this, "✅ Login successful!\nWelcome " + fullname);
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                topFrame.getContentPane().removeAll();
+
+                HomePage homePage = new HomePage();
+                homePage.setGUI();
+                topFrame.add(homePage);
+                topFrame.revalidate();
+                topFrame.repaint();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ Login failed! Check email or password.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "⚠️ Error: " + ex.getMessage());
         }
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(this, "⚠️ Error: " + ex.getMessage());
     }
-}
-
 private void switchToRegisterCustomerPage() {
-    // Get the top-level JFrame that contains this panel
+
     JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-    topFrame.getContentPane().removeAll(); // remove the current LoginPage panel
+    topFrame.getContentPane().removeAll();
 
-    // Create RegisterCustomerPage panel and set it up
-    RegisterCustomerPage registerPage = new RegisterCustomerPage();
-    registerPage.setGUI(); // call the GUI setup method if it exists
 
-    // Add the RegisterCustomerPage panel to the frame
-    topFrame.add(registerPage);
-    topFrame.revalidate(); // refresh the fr
+   // RegisterCustomerPage registerPage = new RegisterCustomerPage();
+  //  registerPage.setGUI();
+
+
+   // topFrame.add(registerPage);
+    topFrame.revalidate();
     topFrame.repaint();
 }
 

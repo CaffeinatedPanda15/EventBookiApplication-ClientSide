@@ -16,7 +16,6 @@ public class BookingFactory {
                 || Helper.isNullorEmpty(String.valueOf(ticketID)) || Helper.isNullorEmpty(status)) {
         }
         return new Booking.Builder()
-                .setCustomerID((int) customerID)
                 .setTicketID((int) ticketID)
                 .setBookingDate(bookingDate)
                 .setStatus(status)

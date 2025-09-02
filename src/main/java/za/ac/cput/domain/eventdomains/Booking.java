@@ -3,12 +3,11 @@ package za.ac.cput.domain.eventdomains;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import za.ac.cput.domain.endusers.Customer;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class Booking extends Customer {
+public class Booking {
 
     @Id
     private String bookingId;
@@ -22,8 +21,6 @@ public class Booking extends Customer {
 
     public Booking(Builder builder) {
         this.bookingId = builder.bookingID;
-        super.setUserName(String.valueOf(builder.customerID));;
-        this.ticketID = builder.customerID;
         this.bookingDate = builder.bookingDate;
         this.status = builder.status;
     }
@@ -48,7 +45,6 @@ public class Booking extends Customer {
     @Override
     public String toString() {
         return "Booking{" +
-                ", customerID=" + getUserName() +
                 ", ticketID=" + ticketID +
                 ", bookingDate=" + bookingDate +
                 ", status='" + status + '\'' +
@@ -57,7 +53,6 @@ public class Booking extends Customer {
 
     public static class Builder {
         private String bookingID;
-        private int customerID;
         private int ticketID;
         private LocalDateTime bookingDate  ;
         private String status;
@@ -68,10 +63,6 @@ public class Booking extends Customer {
             return this;
         }
 
-        public Builder setCustomerID(int customerID) {
-            this.customerID = customerID;
-            return this;
-        }
 
         public Builder setTicketID(int ticketID) {
             this.ticketID = ticketID;
@@ -90,7 +81,6 @@ public class Booking extends Customer {
 
         public Builder copy(Booking booking) {
             this.bookingID = bookingID;
-            this.customerID = customerID;
             this.ticketID = ticketID;
             this.bookingDate = bookingDate;
             this.status = status;

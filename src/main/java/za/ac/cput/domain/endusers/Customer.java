@@ -1,26 +1,69 @@
 package za.ac.cput.domain.endusers;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-public class Customer extends User {
+@Table(name = "customer")
+public class Customer {
+
+    @Id
+    @Column(name = "username")
+    private String userName;
+
+    @Column(name = "fullname")
+    private String fullName;
 
 
+    @Column(name = "emailaddress")
+    private String emailAddress;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "usertype")
+    private String userType;
+
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "contactnumber")
     private String contactNumber;
 
     public Customer() {
+
     }
 
-    private Customer(Builder build) {
-        super.setUserName(build.userName);
-        super.setFullname(build.fullname);
-        super.setEmailAddress(build.emailAddress);
-        super.setPassword(build.password);
-        super.setUserType(build.userType);
-        this.address = build.address;
-        this.contactNumber = build.contactNumber;
+    private Customer(Builder builder) {
+        this.userName = builder.userName;
+        this.fullName = builder.fullName;
+        this.emailAddress = builder.emailAddress;
+        this.password = builder.password;
+        this.userType = builder.userType;
+        this.address = builder.address;
+        this.contactNumber = builder.contactNumber;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 
     public String getAddress() {
@@ -34,22 +77,22 @@ public class Customer extends User {
     @Override
     public String toString() {
         return "Customer{" +
-                "userName=" + getUserName() +
-                ", fullname=" + getFullname() +
-                ", emailAddress=" + getEmailAddress() +
-                ", password=" + getPassword() +
-                ", userType=" + getUserType() +
-                ", address=" + address +
-                ", contactNumber=" + contactNumber +
+                "userName='" + userName + '\'' +
+                ", Fullname='" + fullName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", password='" + password + '\'' +
+                ", userType='" + userType + '\'' +
+                ", address='" + address + '\'' +
+                ", contactNumber='" + contactNumber + '\'' +
                 '}';
     }
 
     public static class Builder {
         private String userName;
-        private String fullname;
+        private String fullName;
         private String emailAddress;
         private String password;
-        private UserType userType;
+        private String userType;
         private String address;
         private String contactNumber;
 
@@ -58,8 +101,8 @@ public class Customer extends User {
             return this;
         }
 
-        public Builder setFullname(String fullname) {
-            this.fullname = fullname;
+        public Builder setFullName(String fullName) {
+            this.fullName = fullName;
             return this;
         }
 
@@ -73,7 +116,7 @@ public class Customer extends User {
             return this;
         }
 
-        public Builder setUserType(UserType userType) {
+        public Builder setUserType(String userType) {
             this.userType = userType;
             return this;
         }
@@ -88,19 +131,23 @@ public class Customer extends User {
             return this;
         }
 
+
         public Customer build() {
             return new Customer(this);
         }
 
         public Builder copy(Customer customer) {
-            this.userName = customer.getUserName();
-            this.fullname = customer.getFullname();
-            this.emailAddress = customer.getEmailAddress();
-            this.password = customer.getPassword();
-            this.userType = customer.getUserType();
-            this.address = customer.getAddress();
-            this.contactNumber = customer.getContactNumber();
+            this.userName = customer.userName;
+            this.fullName = customer.fullName;
+            this.emailAddress = customer.emailAddress;
+            this.password = customer.password;
+            this.userType = customer.userType;
+            this.address = customer.address;
+            this.contactNumber = customer.contactNumber;
             return this;
         }
     }
+
+
+
 }

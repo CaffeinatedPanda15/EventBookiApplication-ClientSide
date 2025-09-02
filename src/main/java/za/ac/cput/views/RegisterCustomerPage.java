@@ -4,10 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class RegisterCustomerPage extends JPanel implements ActionListener {
 
-    // --- North ---
+    // North
     private JPanel panelNorth;
     private JLabel lblLogo;
     private JLabel lblTitle;
@@ -16,7 +22,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
     private JButton btnVenues;
     private JButton btnLoginPage;
 
-    // --- West (registration form) ---
+    // West
     private JPanel panelWest;
     private JLabel lblUserName;
     private JLabel lblFullName;
@@ -36,7 +42,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
 
     private JButton btnRegister;
 
-    // --- Empty labels for spacing (manually) ---
+    // Empty labels
     private JLabel empty1;
     private JLabel empty2;
     private JLabel empty3;
@@ -50,13 +56,13 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
     private JLabel empty11;
     private JLabel empty12;
 
-    // --- Right (background image) ---
+    //Right
     private BackgroundPanel panelRight;
 
     public RegisterCustomerPage() {
         super(new BorderLayout());
 
-        // --- North ---
+        //North
         panelNorth = new JPanel(new GridLayout(3, 1));
         panelNorth.setBackground(Color.BLACK);
 
@@ -74,7 +80,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         btnVenues = new JButton("Venues");
         btnLoginPage = new JButton("Login Page");
 
-        // Style buttons manually
+
         btnHome.setBackground(new Color(50, 50, 50));
         btnHome.setForeground(Color.WHITE);
         btnHome.setFocusPainted(false);
@@ -103,7 +109,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         btnLoginPage.setFont(new Font("Arial", Font.BOLD, 14));
         btnLoginPage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        // --- West (registration form) ---
+        //West
         panelWest = new JPanel();
         panelWest.setBackground(Color.BLACK);
         panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
@@ -127,8 +133,8 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         lblUserType = new JLabel("User Type:");
         lblUserType.setForeground(Color.WHITE);
         comboUserType = new JComboBox<>();
-        comboUserType.addItem("Regular");
-        comboUserType.addItem("VIP");
+        comboUserType.addItem("Customer");
+        comboUserType.addItem("Admin");
 
         lblAddress = new JLabel("Address:");
         lblAddress.setForeground(Color.WHITE);
@@ -141,7 +147,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         btnRegister = new JButton("Register");
         btnRegister.addActionListener(this);
 
-        // --- Empty labels manually ---
+        //Empty labels
         empty1 = new JLabel();
         empty2 = new JLabel();
         empty3 = new JLabel();
@@ -155,14 +161,14 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         empty11 = new JLabel();
         empty12 = new JLabel();
 
-        // --- Right (background image) ---
+        //Right/background image
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
         panelRight = new BackgroundPanel(bgIcon.getImage());
     }
 
     public void setGUI() {
 
-        // --- North layout ---
+        //North
         panelNorth.add(lblLogo);
 
         JPanel rowTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -178,7 +184,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         rowNav.add(btnLoginPage);
         panelNorth.add(rowNav);
 
-        // --- West layout ---
+        //West layout
         panelWest.add(empty1);
         panelWest.add(empty2);
 
@@ -240,7 +246,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         panelWest.add(empty11);
         panelWest.add(empty12);
 
-        // --- Add panels to main ---
+        //Add panels to main
         add(panelNorth, BorderLayout.NORTH);
         add(panelWest, BorderLayout.WEST);
         add(panelRight, BorderLayout.CENTER);
@@ -248,23 +254,41 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String username = txtUserName.getText();
-        String fullName = txtFullName.getText();
-        String email = txtEmail.getText();
-        String password = new String(txtPassword.getPassword());
-        String userType = (String) comboUserType.getSelectedItem();
-        String address = txtAddress.getText();
-        String contact = txtContact.getText();
+        try {
+            String username = txtUserName.getText();
+            String fullName = txtFullName.getText();
+            String email = txtEmail.getText();
+            String password = new String(txtPassword.getPassword());
+            String userType = (String) comboUserType.getSelectedItem();
+            String address = txtAddress.getText();
+            String contact = txtContact.getText();
 
-        JOptionPane.showMessageDialog(this, "Register attempt: "
-                + username + " / "
-                + fullName + " / "
-                + email + " / "
-                + password + " / "
-                + userType + " / "
-                + address + " / "
-                + contact);
-    }
+            String JsonData = String.format(
+                    "{\"userName\":\"%s\",\"Fullname\":\"%s\",\"emailAddress\":\"%s\",\"password\":\"%s\",\"userType\":\"%s\",\"address\":\"%s\",\"contactNumber\":\"%s\"}",
+                    username, fullName, email, password, userType, address, contact
+            );
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("http://localhost:8080/customer/create"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(JsonData))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200 || response.statusCode() == 201) {
+                JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Registration Failed: " + response.body(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);}
+        }
+
 
     private static class BackgroundPanel extends JPanel {
         private final Image backgroundImage;
@@ -292,4 +316,5 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
         frame.add(registerPage);
         frame.setVisible(true);
     }
+
 }

@@ -1,17 +1,27 @@
 package za.ac.cput.domain.endusers;
+/*
 
+import jakarta.persistence.*;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type")
 public abstract class User {
 
     @Id
+    @Column(name = "username")
     private String userName;
+
+    @Column(name = "fullname")
     private String fullname;
+
+    @Column(name = "email", unique = true)
     private String emailAddress;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "usertype")
     private UserType userType;
 
 
@@ -69,3 +79,4 @@ public abstract class User {
                 '}';
     }
 }//end of class
+*/

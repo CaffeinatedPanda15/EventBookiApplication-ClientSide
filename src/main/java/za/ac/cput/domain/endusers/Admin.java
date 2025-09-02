@@ -1,25 +1,65 @@
 package za.ac.cput.domain.endusers;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
-public class Admin extends User {
-    public static Object UserType;
+public class Admin {
+
+    @Id
+    @Column(name = "username")
+    private String userName;
+
+    @Column(name = "fullname")
+    private String fullname;
+
+    @Column(name = "emailaddress")
+    private String emailAddress;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "usertype")
+    private String userType;
+
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "contactnumber")
     private String contactNumber;
 
     public Admin() {
-
     }
 
     private Admin(Builder build) {
-        super.setUserName(build.userName);
-        super.setFullname(build.fullname);
-        super.setEmailAddress(build.emailAddress);
-        super.setPassword(build.password);
-        super.setUserType(build.userType);
+        this.userName = build.userName;
+        this.fullname = build.fullname;
+        this.emailAddress = build.emailAddress;
+        this.password = build.password;
+        this.userType = build.userType;
         this.address = build.address;
         this.contactNumber = build.contactNumber;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 
     public String getAddress() {
@@ -33,12 +73,12 @@ public class Admin extends User {
     @Override
     public String toString() {
         return "Admin{" +
-                "userName=" + getUserName() +
-                ", fullname=" + getFullname() +
-                ", emailAddress=" + getEmailAddress() +
-                ", password=" + getPassword() +
-                ", userType=" + getUserType() +
-                "address='" + address + '\'' +
+                "userName='" + userName + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", password='" + password + '\'' +
+                ", userType=" + userType +
+                ", address='" + address + '\'' +
                 ", contactNumber='" + contactNumber + '\'' +
                 '}';
     }
@@ -48,7 +88,7 @@ public class Admin extends User {
         private String fullname;
         private String emailAddress;
         private String password;
-        private UserType userType;
+        private String userType;
         private String address;
         private String contactNumber;
 
@@ -72,7 +112,7 @@ public class Admin extends User {
             return this;
         }
 
-        public Builder setUserType(UserType userType) {
+        public Builder setUserType(String userType) {
             this.userType = userType;
             return this;
         }
@@ -101,7 +141,5 @@ public class Admin extends User {
             this.contactNumber = admin.getContactNumber();
             return this;
         }
-
-
-    }//end of builder class
-}//end of class
+    }
+}
