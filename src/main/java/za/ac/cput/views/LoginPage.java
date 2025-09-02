@@ -22,7 +22,7 @@ public class LoginPage extends JPanel implements ActionListener {
 
     // West/Login Panel
     private JPanel panelWest;
-    private JLabel labelUserName;
+    private JLabel labelEmailAddress;
     private JLabel labelPassword;
     private JTextField tfieldUserName;
     private JPasswordField txtPassword;
@@ -109,8 +109,8 @@ public class LoginPage extends JPanel implements ActionListener {
         panelWest.setBackground(Color.BLACK);
         panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
 
-        labelUserName = new JLabel("Username:");
-        labelUserName.setForeground(Color.WHITE);
+        labelEmailAddress = new JLabel("Email Address:");
+        labelEmailAddress.setForeground(Color.WHITE);
         tfieldUserName = new JTextField(15);
 
         labelPassword = new JLabel("Password:");
@@ -161,7 +161,7 @@ public class LoginPage extends JPanel implements ActionListener {
 
         JPanel userRow = new JPanel(new GridLayout(1, 2, 5, 5));
         userRow.setOpaque(false);
-        userRow.add(labelUserName);
+        userRow.add(labelEmailAddress);
         userRow.add(tfieldUserName);
         panelWest.add(userRow);
 
@@ -193,7 +193,7 @@ public class LoginPage extends JPanel implements ActionListener {
 
     public void loginCustomer() {
         try {
-            String email = tfieldUserName.getText(); // assuming email is the login field
+            String email = tfieldUserName.getText();
             String password = new String(txtPassword.getPassword());
 
 
@@ -213,9 +213,9 @@ public class LoginPage extends JPanel implements ActionListener {
             if (response.statusCode() == 200) {
                 String responseBody = response.body();
                 org.json.JSONObject jsonObj = new org.json.JSONObject(responseBody);
-                String fullname = jsonObj.getString("fullname");
+                String fullName = jsonObj.getString("fullName");
 
-                JOptionPane.showMessageDialog(this, "✅ Login successful!\nWelcome " + fullname);
+                JOptionPane.showMessageDialog(this, "✅ Login successful!\nWelcome " + fullName);
                 JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
                 topFrame.getContentPane().removeAll();
 
@@ -239,11 +239,11 @@ private void switchToRegisterCustomerPage() {
     topFrame.getContentPane().removeAll();
 
 
-   // RegisterCustomerPage registerPage = new RegisterCustomerPage();
-  //  registerPage.setGUI();
+   RegisterCustomerPage registerPage = new RegisterCustomerPage();
+   registerPage.setGUI();
 
 
-   // topFrame.add(registerPage);
+   topFrame.add(registerPage);
     topFrame.revalidate();
     topFrame.repaint();
 }

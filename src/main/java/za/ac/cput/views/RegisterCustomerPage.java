@@ -264,7 +264,7 @@ public class RegisterCustomerPage extends JPanel implements ActionListener {
             String contact = txtContact.getText();
 
             String JsonData = String.format(
-                    "{\"userName\":\"%s\",\"Fullname\":\"%s\",\"emailAddress\":\"%s\",\"password\":\"%s\",\"userType\":\"%s\",\"address\":\"%s\",\"contactNumber\":\"%s\"}",
+                    "{\"userName\":\"%s\",\"fullName\":\"%s\",\"emailAddress\":\"%s\",\"password\":\"%s\",\"userType\":\"%s\",\"address\":\"%s\",\"contactNumber\":\"%s\"}",
                     username, fullName, email, password, userType, address, contact
             );
 
