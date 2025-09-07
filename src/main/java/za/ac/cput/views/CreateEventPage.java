@@ -4,8 +4,50 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class CreateEventPage extends JPanel implements ActionListener {
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+
+public class ToDoClient {
+
+    private final String BASE_URL = "http://localhost:8080/create";
+    private final HttpClient client;
+    private final ObjectMapper objectMapper;
+
+    public ToDoClient() {
+        client = HttpClient.newHttpClient();
+        objectMapper = new ObjectMapper();
+    }
+
+    public HttpResponse<String> create(ToDo todo) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL))
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper
+                        .writeValueAsString(todo)))
+                .build();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public HttpResponse<String> update(ToDo todo) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + todo.id()))
+                .PUT(HttpRequest.BodyPublishers.ofString(objectMapper
+                        .writeValueAsString(todo)))
+                .build();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+}
+
+    public class CreateEventPage extends JPanel implements ActionListener {
     private JPanel panelNorth, panelCenter, panelSouth;
     private JLabel lblTitle, lblName, lblDescription, lblLocation,
             lblDate, lblTime, lblCategory, lblStatus;
@@ -86,6 +128,8 @@ public class CreateEventPage extends JPanel implements ActionListener {
         String category = txtCategory.getText();
         String status = (String) cbxStatus.getSelectedItem(); // replace with EventStatus
 
+
+
         JOptionPane.showMessageDialog(this,
                 "Event Created:\n" +
                         "Name: " + eventName + "\n" +
@@ -95,6 +139,8 @@ public class CreateEventPage extends JPanel implements ActionListener {
                         "Time: " + eventTime + "\n" +
                         "Category: " + category + "\n" +
                         "Status: " + status);
+
+
     }
 
     public static void main(String[] args) {
