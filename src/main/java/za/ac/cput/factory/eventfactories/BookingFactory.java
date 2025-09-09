@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 
 public class BookingFactory {
 
-    public static Booking createBooking(long customerID, long ticketID, LocalDateTime bookingDate,
-                                        String status) {
+    public static Booking createBooking(long customerID, long ticketID,
+                                        LocalDateTime bookingDate, String status) {
         if (Helper.isNullorEmpty(String.valueOf(customerID))
                 || Helper.isNullorEmpty(String.valueOf(ticketID)) || Helper.isNullorEmpty(status)) {
         }
