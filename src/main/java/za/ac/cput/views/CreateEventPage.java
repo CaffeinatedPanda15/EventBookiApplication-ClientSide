@@ -1,6 +1,7 @@
 package za.ac.cput.views;
 
 import za.ac.cput.factory.eventfactories.EventFactory;
+import za.ac.cput.util.EventClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,8 +100,8 @@ import java.util.List;
         String status = (String) cbxStatus.getSelectedItem(); // replace with EventStatus
 
         try {
-            EventFactory EventClient =  new EventFactory();
-            String message = EventClient.createEvent(category.trim(), eventTime.trim(),
+            EventClient eventClient =  new EventClient();
+            String message = eventClient.createEvent(category.trim(), eventTime.trim(),
                     eventDate.trim(), eventDescription.trim(), eventName.trim()
             );
             JOptionPane.showMessageDialog(null, message);
