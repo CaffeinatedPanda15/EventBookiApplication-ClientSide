@@ -1,13 +1,13 @@
 package za.ac.cput.views;
 
+import za.ac.cput.factory.eventfactories.EventFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,36 +16,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public class ToDoClient {
-
-    private final String BASE_URL = "http://localhost:8080/create";
-    private final HttpClient client;
-    private final ObjectMapper objectMapper;
-
-    public ToDoClient() {
-        client = HttpClient.newHttpClient();
-        objectMapper = new ObjectMapper();
-    }
-
-    public HttpResponse<String> create(ToDo todo) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL))
-                .POST(HttpRequest.BodyPublishers.ofString(objectMapper
-                        .writeValueAsString(todo)))
-                .build();
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    public HttpResponse<String> update(ToDo todo) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/" + todo.id()))
-                .PUT(HttpRequest.BodyPublishers.ofString(objectMapper
-                        .writeValueAsString(todo)))
-                .build();
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-}
 
     public class CreateEventPage extends JPanel implements ActionListener {
     private JPanel panelNorth, panelCenter, panelSouth;
@@ -128,17 +98,29 @@ public class ToDoClient {
         String category = txtCategory.getText();
         String status = (String) cbxStatus.getSelectedItem(); // replace with EventStatus
 
+        try {
+            EventFactory EventClient =  new EventFactory();
+            String message = EventClient.createEvent(category.trim(), eventTime.trim(),
+                    eventDate.trim(), eventDescription.trim(), eventName.trim()
+            );
+            JOptionPane.showMessageDialog(null, message);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, " Error: " + ex.getMessage());
+        }
 
-
-        JOptionPane.showMessageDialog(this,
-                "Event Created:\n" +
-                        "Name: " + eventName + "\n" +
-                        "Description: " + eventDescription + "\n" +
-                        "Location: " + eventLocation + "\n" +
-                        "Date: " + eventDate + "\n" +
-                        "Time: " + eventTime + "\n" +
-                        "Category: " + category + "\n" +
-                        "Status: " + status);
+//
+//
+//
+//        JOptionPane.showMessageDialog(this,
+//                "Event Created:\n" +
+//                        "Name: " + eventName + "\n" +
+//                        "Description: " + eventDescription + "\n" +
+//                        "Location: " + eventLocation + "\n" +
+//                        "Date: " + eventDate + "\n" +
+//                        "Time: " + eventTime + "\n" +
+//                        "Category: " + category + "\n" +
+//                        "Status: " + status);
 
 
     }

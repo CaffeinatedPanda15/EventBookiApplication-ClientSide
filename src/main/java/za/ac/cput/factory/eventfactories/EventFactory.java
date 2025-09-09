@@ -3,10 +3,40 @@ package za.ac.cput.factory.eventfactories;
 
 import za.ac.cput.domain.eventdomains.Event;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.Time;
 
 public class EventFactory {
-   public static Event createEvent(String eventName, String eventDate, Time eventTime, String eventLocation, String eventDescription) {
+
+        private static final String BASE_URL = "http://localhost:8080/api/events";
+
+        public static String createEvent(String category, String time, String date, String description, String name) throws Exception {
+            String json = String.format("{ \"category\":\"%s\", \"eventTime\"" +
+                            ":\"%s\", " + "\"eventDate\":\"%s\", " +
+                            "\"eventDescription\":\"%s\", \"eventName\":\"%s\" }",
+                    category, time, date, description, name
+            );
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
+                return " Event created successfully!\nResponse: " + response.body();
+            } else {
+                return " Failed to create event.\nStatus: " + response.statusCode() + "\nResponse: " + response.body();
+            }
+        }
+
+    public static Event createEven(String eventName, String eventDate, Time eventTime, String eventLocation, String eventDescription) {
          if (eventName == null || eventDate == null || eventTime == null || eventLocation == null || eventDescription == null) {
                 return null;
 
@@ -20,4 +50,4 @@ public class EventFactory {
                .build();
 
    }
-    }//end of class
+}
