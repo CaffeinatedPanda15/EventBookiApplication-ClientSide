@@ -1,11 +1,24 @@
 package za.ac.cput.views;
 
+import za.ac.cput.factory.eventfactories.EventFactory;
+import za.ac.cput.util.EventClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class CreateEventPage extends JPanel implements ActionListener {
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+
+
+    public class CreateEventPage extends JPanel implements ActionListener {
     private JPanel panelNorth, panelCenter, panelSouth;
     private JLabel lblTitle, lblName, lblDescription, lblLocation,
             lblDate, lblTime, lblCategory, lblStatus;
@@ -86,15 +99,31 @@ public class CreateEventPage extends JPanel implements ActionListener {
         String category = txtCategory.getText();
         String status = (String) cbxStatus.getSelectedItem(); // replace with EventStatus
 
-        JOptionPane.showMessageDialog(this,
-                "Event Created:\n" +
-                        "Name: " + eventName + "\n" +
-                        "Description: " + eventDescription + "\n" +
-                        "Location: " + eventLocation + "\n" +
-                        "Date: " + eventDate + "\n" +
-                        "Time: " + eventTime + "\n" +
-                        "Category: " + category + "\n" +
-                        "Status: " + status);
+        try {
+            EventClient eventClient =  new EventClient();
+            String message = eventClient.createEvent(category.trim(), eventTime.trim(),
+                    eventDate.trim(), eventDescription.trim(), eventName.trim()
+            );
+            JOptionPane.showMessageDialog(null, message);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, " Error: " + ex.getMessage());
+        }
+
+//
+//
+//
+//        JOptionPane.showMessageDialog(this,
+//                "Event Created:\n" +
+//                        "Name: " + eventName + "\n" +
+//                        "Description: " + eventDescription + "\n" +
+//                        "Location: " + eventLocation + "\n" +
+//                        "Date: " + eventDate + "\n" +
+//                        "Time: " + eventTime + "\n" +
+//                        "Category: " + category + "\n" +
+//                        "Status: " + status);
+
+
     }
 
     public static void main(String[] args) {
