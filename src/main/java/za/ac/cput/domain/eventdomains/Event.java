@@ -1,7 +1,6 @@
 package za.ac.cput.domain.eventdomains;
 
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
