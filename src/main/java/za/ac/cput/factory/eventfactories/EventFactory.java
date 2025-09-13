@@ -3,10 +3,16 @@ package za.ac.cput.factory.eventfactories;
 
 import za.ac.cput.domain.eventdomains.Event;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.Time;
 
 public class EventFactory {
-   public static Event createEvent(String eventName, String eventDate, Time eventTime, String eventLocation, String eventDescription) {
+
+
+    public static Event createEvent(String eventName, String eventDate, Time eventTime, String eventLocation, String eventDescription) {
          if (eventName == null || eventDate == null || eventTime == null || eventLocation == null || eventDescription == null) {
                 return null;
 
@@ -20,4 +26,4 @@ public class EventFactory {
                .build();
 
    }
-    }//end of class
+}
