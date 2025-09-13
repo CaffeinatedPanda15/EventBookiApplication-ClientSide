@@ -4,15 +4,13 @@
 
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 import java.util.Date;
 
-@Entity
+
 public class Payment {
 
-    @Id
+
     private int paymentID;
     private double amount;
     private Date paymentDate;

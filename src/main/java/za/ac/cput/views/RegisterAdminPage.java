@@ -13,8 +13,6 @@ import java.net.http.HttpResponse;
 
 public class RegisterAdminPage extends JPanel implements ActionListener {
 
-    private final CardLayout cardLayout;
-    private final JPanel mainPanel;
 
     //NORTH
     private JPanel panelNorth;
@@ -36,9 +34,11 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
     //RIGHT
     private BackgroundPanel panelRight;
 
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
     public RegisterAdminPage(CardLayout cardLayout, JPanel mainPanel) {
         super(new BorderLayout());
-
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
 
@@ -123,6 +123,8 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
         //RIGHT
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
         panelRight = new BackgroundPanel(bgIcon.getImage());
+
+        setGUI();
     }
 
     public void setGUI() {

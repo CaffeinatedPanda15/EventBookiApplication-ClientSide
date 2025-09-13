@@ -15,7 +15,7 @@ import java.net.http.HttpResponse;
 public class LoginPage extends JPanel implements ActionListener {
     private final CardLayout cardLayout;
     private final JPanel mainPanel;
-    private final AdminHomePage adminHomePage;
+    private final HomePage HomePage;
     private final RegisterAdminPage registerPage;
 
 
@@ -26,11 +26,11 @@ public class LoginPage extends JPanel implements ActionListener {
     private JButton buttonHome, buttonEvents, buttonVenues, buttonSignup, buttonLogin;
     private BackgroundPanel panelRight;
 
-    public LoginPage(CardLayout cardLayout, JPanel mainPanel, AdminHomePage adminHomePage, RegisterAdminPage registerAdminPage) {
+    public LoginPage(CardLayout cardLayout, JPanel mainPanel, HomePage HomePage, RegisterAdminPage registerAdminPage) {
         super(new BorderLayout());
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
-        this.adminHomePage = adminHomePage;
+        this.HomePage = HomePage;
         this.registerPage = registerAdminPage;
 
         setGUI();
@@ -143,7 +143,7 @@ public class LoginPage extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "✅ Admin Login successful!\nWelcome " + fullName);
 
                 // Switch to Admin Home
-                cardLayout.show(mainPanel, "admin");
+                cardLayout.show(mainPanel, "HomePage");
 
             } else {
                 JOptionPane.showMessageDialog(this, "❌ Login failed! Check email or password.");

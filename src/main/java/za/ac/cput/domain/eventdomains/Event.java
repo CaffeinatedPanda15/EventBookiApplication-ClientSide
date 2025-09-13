@@ -1,15 +1,13 @@
 package za.ac.cput.domain.eventdomains;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 import java.sql.Time;
 
-@Entity
+
 public class Event {
 
-    @Id
+
     private int eventId;
     private String eventName;
     private String eventDescription;

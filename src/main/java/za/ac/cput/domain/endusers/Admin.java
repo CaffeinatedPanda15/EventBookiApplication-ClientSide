@@ -1,39 +1,34 @@
 package za.ac.cput.domain.endusers;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "admin")
+
 public class Admin {
 
-    @Id
-    @Column(name = "username", nullable = false, unique = true)
+
     private String userName;
 
-    @Column(name = "fullname", nullable = false)
+
     private String fullName;
 
-    @Column(name = "emailaddress", nullable = false, unique = true)
+
     private String emailAddress;
 
-    @Column(name = "password", nullable = false)
+
     private String password;
 
-    @Column(name = "status")
+
     private String status; // ACTIVE, INACTIVE, SUSPENDED
 
-    @Column(name = "last_login")
+
     private LocalDateTime lastLogin;
 
-    @Column(name = "created_by", nullable = false)
+
     private String createdBy; // who created this admin
 
-    @Column(name = "created_date", nullable = false)
+
     private LocalDateTime createdDate;
 
     public Admin() {}

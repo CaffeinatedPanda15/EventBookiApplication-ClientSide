@@ -1,6 +1,7 @@
 package za.ac.cput;
 
 import za.ac.cput.views.AdminHomePage;
+import za.ac.cput.views.HomePage;
 import za.ac.cput.views.LoginPage;
 import za.ac.cput.views.RegisterAdminPage;
 
@@ -16,13 +17,14 @@ public class Main {
         CardLayout cardLayout = new CardLayout();
         JPanel mainPanel = new JPanel(cardLayout);
 
-        AdminHomePage adminHomePage = new AdminHomePage();
+        HomePage HomePage = new HomePage(cardLayout, mainPanel);
         RegisterAdminPage registerAdminPage = new RegisterAdminPage(cardLayout, mainPanel);
-        LoginPage loginPage = new LoginPage(cardLayout, mainPanel, adminHomePage, registerAdminPage);
+        LoginPage loginPage = new LoginPage(cardLayout, mainPanel, HomePage, registerAdminPage);
 
         mainPanel.add(loginPage, "login");
         mainPanel.add(registerAdminPage, "registerAdminPage");
-        mainPanel.add(adminHomePage, "admin");
+        mainPanel.add(HomePage, "HomePage");
+
 
         cardLayout.show(mainPanel, "login"); // Landing page = Login
 
