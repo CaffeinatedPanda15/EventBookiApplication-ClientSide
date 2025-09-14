@@ -1,5 +1,6 @@
 package za.ac.cput.util;
 
+import org.json.JSONObject;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -9,9 +10,10 @@ public class EventClient {
 
     private static final String BASE_URL = "http://localhost:8080/api/events";
 
-    public static String createEvent(String category, String time, String date, String description, String name) throws Exception {
-        String json = String.format("{ \"category\":\"%s\", \"eventTime\"" +
-                        ":\"%s\", " + "\"eventDate\":\"%s\", " +
+    public String createEvent(String category, String time, String date,
+                              String description, String name) throws Exception {
+        String json = String.format(
+                "{ \"category\":\"%s\", \"eventTime\":\"%s\", \"eventDate\":\"%s\", " +
                         "\"eventDescription\":\"%s\", \"eventName\":\"%s\" }",
                 category, time, date, description, name
         );
@@ -26,10 +28,21 @@ public class EventClient {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 201 || response.statusCode() == 200) {
-            return " Event created successfully!\nResponse: " + response.body();
+            JSONObject obj = new JSONObject(response.body());
+            Long eventId = obj.getLong("eventId");
+            String eventName = obj.getString("eventName");
+
+            String eventStatus;
+            if (obj.isNull("status")) {
+                eventStatus = "UNKNOWN";
+            } else {
+                eventStatus = obj.getString("status");
+            }
+
+            return "Event Created!\nID: " + eventId + "\nName: " + eventName + "\nStatus: " + eventStatus;
         } else {
-            return " Failed to create event.\nStatus: " + response.statusCode() + "\nResponse: " + response.body();
+            return "Failed to create event.\nStatus: " + response.statusCode() +
+                    "\nResponse: " + response.body();
         }
     }
-
 }
