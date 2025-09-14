@@ -1,5 +1,6 @@
 package za.ac.cput.views;
 
+import org.json.JSONObject;
 import za.ac.cput.factory.eventfactories.EventFactory;
 import za.ac.cput.util.EventClient;
 
@@ -89,44 +90,38 @@ import java.util.List;
         btnCreate.addActionListener(this);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String eventName = txtName.getText();
-        String eventDescription = txtDescription.getText();
-        String eventLocation = (String) cbxLocation.getSelectedItem(); // replace with Venue
-        String eventDate = txtDate.getText();
-        String eventTime = txtTime.getText();
-        String category = txtCategory.getText();
-        String status = (String) cbxStatus.getSelectedItem(); // replace with EventStatus
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String eventName = txtName.getText();
+            String eventDescription = txtDescription.getText();
+            String eventLocation = (String) cbxLocation.getSelectedItem(); // replace with Venue
+            String eventDate = txtDate.getText();
+            String eventTime = txtTime.getText();
+            String category = txtCategory.getText();
+            String status = (String) cbxStatus.getSelectedItem(); // replace with EventStatus
 
-        try {
-            EventClient eventClient =  new EventClient();
-            String message = eventClient.createEvent(category.trim(), eventTime.trim(),
-                    eventDate.trim(), eventDescription.trim(), eventName.trim()
-            );
-            JOptionPane.showMessageDialog(null, message);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, " Error: " + ex.getMessage());
+            try {
+                EventClient eventClient = new EventClient();
+                String message = eventClient.createEvent(
+                        category.trim(),
+                        eventTime.trim(),
+                        eventDate.trim(),
+                        eventDescription.trim(),
+                        eventName.trim()
+                );
+
+                // Just show whatever the backend responded with
+                JOptionPane.showMessageDialog(this, message);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            }
         }
 
-//
-//
-//
-//        JOptionPane.showMessageDialog(this,
-//                "Event Created:\n" +
-//                        "Name: " + eventName + "\n" +
-//                        "Description: " + eventDescription + "\n" +
-//                        "Location: " + eventLocation + "\n" +
-//                        "Date: " + eventDate + "\n" +
-//                        "Time: " + eventTime + "\n" +
-//                        "Category: " + category + "\n" +
-//                        "Status: " + status);
 
 
-    }
-
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         JFrame frame = new JFrame("Event Creation");
         CreateEventPage eventPage = new CreateEventPage();
         eventPage.setGUI();
