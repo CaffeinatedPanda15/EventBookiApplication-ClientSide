@@ -12,7 +12,7 @@ public class HomePage extends JPanel {
     private JButton buttonHome;
     private JButton buttonEvents;
     private JButton buttonVenues;
-    private JButton buttonOther;
+    private JButton buttonRegisterNewAdmin;
 
     // West
     private JPanel panelWest;
@@ -34,8 +34,13 @@ public class HomePage extends JPanel {
     // background image
     private BackgroundPanel panelRight;
 
-    public HomePage() {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
+    public HomePage(CardLayout cardLayout, JPanel mainPanel) {
         super(new BorderLayout());
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
 
         // North
         panelNorth = new JPanel(new GridLayout(3, 1));
@@ -77,15 +82,16 @@ public class HomePage extends JPanel {
         buttonVenues.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
-        buttonOther = new JButton("Other");
-        buttonOther.setBackground(new Color(50, 50, 50));
-        buttonOther.setForeground(Color.WHITE);
-        buttonOther.setFocusPainted(false);
-        buttonOther.setBorderPainted(false);
-        buttonOther.setFont(new Font("Arial", Font.BOLD, 14));
-        buttonOther.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        buttonRegisterNewAdmin = new JButton("Add Admin");
+        buttonRegisterNewAdmin.setBackground(new Color(50, 50, 50));
+        buttonRegisterNewAdmin.setForeground(Color.WHITE);
+        buttonRegisterNewAdmin.setFocusPainted(false);
+        buttonRegisterNewAdmin.setBorderPainted(false);
+        buttonRegisterNewAdmin.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonRegisterNewAdmin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
+    buttonRegisterNewAdmin.addActionListener(e -> cardLayout.show(mainPanel, "registerAdminPage"));
 
         // West
         panelWest = new JPanel();
@@ -109,6 +115,8 @@ public class HomePage extends JPanel {
         //Right
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
         panelRight = new BackgroundPanel(bgIcon.getImage());
+
+        setGUI();
     }
 
     public void setGUI() {
@@ -125,7 +133,7 @@ public class HomePage extends JPanel {
         navigationRow.add(buttonHome);
         navigationRow.add(buttonEvents);
         navigationRow.add(buttonVenues);
-        navigationRow.add(buttonOther);
+        navigationRow.add(buttonRegisterNewAdmin);
         panelNorth.add(navigationRow);
 
         //West
@@ -166,7 +174,7 @@ public class HomePage extends JPanel {
     }
 
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         JFrame frame = new JFrame("Base Page");
         HomePage basePage = new HomePage();
         basePage.setGUI();
@@ -175,5 +183,5 @@ public class HomePage extends JPanel {
         frame.setSize(1000, 700);
         frame.add(basePage);
         frame.setVisible(true);
-    }
+    }*/
 }

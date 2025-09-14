@@ -166,7 +166,7 @@ public class AdminHomePage extends JPanel {
     }
 
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         JFrame frame = new JFrame("Base Page");
         HomePage basePage = new HomePage();
         basePage.setGUI();
@@ -175,5 +175,5 @@ public class AdminHomePage extends JPanel {
         frame.setSize(1000, 700);
         frame.add(basePage);
         frame.setVisible(true);
-    }
+    }*/
 }

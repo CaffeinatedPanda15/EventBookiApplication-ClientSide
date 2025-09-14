@@ -1,145 +1,104 @@
 package za.ac.cput.domain.endusers;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
-@Entity
+
+import java.time.LocalDateTime;
+
+
 public class Admin {
 
-    @Id
-    @Column(name = "username")
+
     private String userName;
 
-    @Column(name = "fullname")
-    private String fullname;
 
-    @Column(name = "emailaddress")
+    private String fullName;
+
+
     private String emailAddress;
 
-    @Column(name = "password")
+
     private String password;
 
-    @Column(name = "usertype")
-    private String userType;
 
-    @Column(name = "address")
-    private String address;
+    private String status; // ACTIVE, INACTIVE, SUSPENDED
 
-    @Column(name = "contactnumber")
-    private String contactNumber;
 
-    public Admin() {
+    private LocalDateTime lastLogin;
+
+
+    private String createdBy; // who created this admin
+
+
+    private LocalDateTime createdDate;
+
+    public Admin() {}
+
+    private Admin(Builder builder) {
+        this.userName = builder.userName;
+        this.fullName = builder.fullName;
+        this.emailAddress = builder.emailAddress;
+        this.password = builder.password;
+        this.status = builder.status;
+        this.lastLogin = builder.lastLogin;
+        this.createdBy = builder.createdBy;
+        this.createdDate = builder.createdDate;
     }
 
-    private Admin(Builder build) {
-        this.userName = build.userName;
-        this.fullname = build.fullname;
-        this.emailAddress = build.emailAddress;
-        this.password = build.password;
-        this.userType = build.userType;
-        this.address = build.address;
-        this.contactNumber = build.contactNumber;
-    }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
+    public String getUserName() { return userName; }
+    public String getFullName() { return fullName; }
+    public String getEmailAddress() { return emailAddress; }
+    public String getPassword() { return password; }
+    public String getStatus() { return status; }
+    public LocalDateTime getLastLogin() { return lastLogin; }
+    public String getCreatedBy() { return createdBy; }
+    public LocalDateTime getCreatedDate() { return createdDate; }
 
     @Override
     public String toString() {
         return "Admin{" +
                 "userName='" + userName + '\'' +
-                ", fullname='" + fullname + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
-                ", password='" + password + '\'' +
-                ", userType=" + userType +
-                ", address='" + address + '\'' +
-                ", contactNumber='" + contactNumber + '\'' +
+                ", status='" + status + '\'' +
+                ", lastLogin=" + lastLogin +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdDate=" + createdDate +
                 '}';
     }
 
+
     public static class Builder {
         private String userName;
-        private String fullname;
+        private String fullName;
         private String emailAddress;
         private String password;
-        private String userType;
-        private String address;
-        private String contactNumber;
+        private String status;
+        private LocalDateTime lastLogin;
+        private String createdBy;
+        private LocalDateTime createdDate;
 
-        public Builder setUserName(String userName) {
-            this.userName = userName;
-            return this;
-        }
+        public Builder setUserName(String userName) { this.userName = userName; return this; }
+        public Builder setFullName(String fullName) { this.fullName = fullName; return this; }
+        public Builder setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; return this; }
+        public Builder setPassword(String password) { this.password = password; return this; }
+        public Builder setStatus(String status) { this.status = status; return this; }
+        public Builder setLastLogin(LocalDateTime lastLogin) { this.lastLogin = lastLogin; return this; }
+        public Builder setCreatedBy(String createdBy) { this.createdBy = createdBy; return this; }
+        public Builder setCreatedDate(LocalDateTime createdDate) { this.createdDate = createdDate; return this; }
 
-        public Builder setFullname(String fullname) {
-            this.fullname = fullname;
-            return this;
-        }
-
-        public Builder setEmailAddress(String emailAddress) {
-            this.emailAddress = emailAddress;
-            return this;
-        }
-
-        public Builder setPassword(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder setUserType(String userType) {
-            this.userType = userType;
-            return this;
-        }
-
-        public Builder setAddress(String address) {
-            this.address = address;
-            return this;
-        }
-
-        public Builder setContactNumber(String contactNumber) {
-            this.contactNumber = contactNumber;
-            return this;
-        }
-
-        public Admin build() {
-            return new Admin(this);
-        }
+        public Admin build() { return new Admin(this); }
 
         public Builder copy(Admin admin) {
-            this.userName = admin.getUserName();
-            this.fullname = admin.getFullname();
-            this.emailAddress = admin.getEmailAddress();
-            this.password = admin.getPassword();
-            this.userType = admin.getUserType();
-            this.address = admin.getAddress();
-            this.contactNumber = admin.getContactNumber();
+            this.userName = admin.userName;
+            this.fullName = admin.fullName;
+            this.emailAddress = admin.emailAddress;
+            this.password = admin.password;
+            this.status = admin.status;
+            this.lastLogin = admin.lastLogin;
+            this.createdBy = admin.createdBy;
+            this.createdDate = admin.createdDate;
             return this;
         }
-    }
-}
+    }//end of builder
+}//end of class

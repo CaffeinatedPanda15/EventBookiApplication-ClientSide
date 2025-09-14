@@ -2,15 +2,14 @@
 
 package za.ac.cput.domain.eventdomains;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
 
 import java.time.LocalDateTime;
 
-@Entity
+
 public class Reservation {
 
-    @Id
+
     private String reservationId;
     private int ticketID;
     private LocalDateTime reservationDate;

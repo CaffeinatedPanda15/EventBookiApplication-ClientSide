@@ -1,5 +1,5 @@
 
-
+/*
 package za.ac.cput.factory.eventfactories;
 
 import za.ac.cput.domain.eventdomains.Booking;
@@ -26,4 +26,4 @@ public class BookingFactory {
 
 }//end of class
 
-
+*/

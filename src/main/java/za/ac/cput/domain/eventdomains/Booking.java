@@ -1,5 +1,5 @@
 
-package za.ac.cput.domain.eventdomains;
+/*package za.ac.cput.domain.eventdomains;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -92,3 +92,4 @@ public class Booking {
         }
     }
 }//end of class
+*/
