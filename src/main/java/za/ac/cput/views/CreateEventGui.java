@@ -33,10 +33,10 @@ public class CreateEventGui {
     private JLabel labelCatering;
     private JTextField tboxCatering;
     private JPanel PanelSouth;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
+    private JButton buttonInsert;
+    private JButton buttonClear;
+    private JButton editButton;
+    private JButton cancelButton;
 
     public Container getPanelAddEventFoundation() {
         return panelAddeventFoundation;
