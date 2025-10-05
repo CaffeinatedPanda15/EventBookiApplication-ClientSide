@@ -29,7 +29,7 @@ import java.util.List;
     private JComboBox<String> cbxStatus;   // Replace String with EventStatus
     private JButton btnCreate;
 
-    public CreateEventPage() {
+    public CreateEventPage(CardLayout cardLayout, JPanel mainPanel) {
         super();
         panelNorth = new JPanel();
         panelCenter = new JPanel(new GridLayout(7, 2, 5, 5));
@@ -54,6 +54,8 @@ import java.util.List;
         cbxStatus = new JComboBox<>(new String[]{"PLANNED", "ONGOING", "COMPLETED"});
 
         btnCreate = new JButton("Create Event");
+
+        setGUI();
     }
 
     public void setGUI() {
@@ -121,7 +123,7 @@ import java.util.List;
 
 
 
-        public static void main(String[] args) {
+      /*  public static void main(String[] args) {
         JFrame frame = new JFrame("Event Creation");
         CreateEventPage eventPage = new CreateEventPage();
         eventPage.setGUI();
@@ -130,6 +132,6 @@ import java.util.List;
         frame.setSize(500, 400);
         frame.add(eventPage);
         frame.setVisible(true);
-    }
+    }*/
 }
 

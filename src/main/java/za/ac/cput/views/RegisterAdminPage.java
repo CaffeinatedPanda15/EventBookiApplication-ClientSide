@@ -14,12 +14,12 @@ import java.net.http.HttpResponse;
 public class RegisterAdminPage extends JPanel implements ActionListener {
 
 
-    //NORTH
+    //North
     private JPanel panelNorth;
     private JLabel lblLogo, lblTitle;
     private JButton btnHome, btnEvents, btnVenues, btnLoginPage;
 
-    //WEST
+    //West
     private JPanel panelWest;
     private JLabel lblUserName, lblFullName, lblEmail, lblPassword;
     private JLabel lblStatus, lblCreatedBy, lblCreatedDate, lblLastLogin;
@@ -31,7 +31,7 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
 
     private JButton btnRegister, btnClear, btnCancel;
 
-    //RIGHT
+    //East
     private BackgroundPanel panelRight;
 
     private CardLayout cardLayout;
@@ -42,7 +42,7 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
 
-        //NORTH
+        //North
         panelNorth = new JPanel(new GridLayout(3, 1));
         panelNorth.setBackground(Color.BLACK);
 
@@ -69,7 +69,7 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
             b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
 
-        // ----- WEST -----
+        //West
         panelWest = new JPanel();
         panelWest.setBackground(Color.BLACK);
         panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
@@ -120,7 +120,7 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(this);
 
-        //RIGHT
+        //East
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("/bowtie.JPG"));
         panelRight = new BackgroundPanel(bgIcon.getImage());
 
@@ -128,7 +128,7 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
     }
 
     public void setGUI() {
-        // NORTH
+        //North
         panelNorth.add(lblLogo);
 
         JPanel rowTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -144,7 +144,7 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
         rowNav.add(btnLoginPage);
         panelNorth.add(rowNav);
 
-        // ----- WEST (MANUAL ROWS) -----
+        //West
         JPanel rowUserName = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         rowUserName.setOpaque(false);
         rowUserName.add(lblUserName);
@@ -200,7 +200,10 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
         rowButtons.add(btnCancel);
         panelWest.add(rowButtons);
 
-        // ----- MAIN -----
+        btnHome.addActionListener(e -> cardLayout.show(mainPanel, "HomePage"));
+        btnEvents.addActionListener(e -> cardLayout.show(mainPanel, "EventPage"));
+
+        //Main
         add(panelNorth, BorderLayout.NORTH);
         add(panelWest, BorderLayout.WEST);
         add(panelRight, BorderLayout.CENTER);
