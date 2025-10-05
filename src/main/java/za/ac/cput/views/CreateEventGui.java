@@ -33,7 +33,7 @@ public class CreateEventGui {
     private JLabel labelCatering;
     private JTextField tboxCatering;
     private JPanel PanelSouth;
-    private JButton buttonInsert;
+    private JButton buttonSave;
     private JButton buttonClear;
     private JButton editButton;
     private JButton cancelButton;
