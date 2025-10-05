@@ -1,9 +1,10 @@
 package za.ac.cput.views;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CreateEventGui {
-    private JPanel panelFoundation;
+    private JPanel panelAddeventFoundation;
     private JPanel panelTitle;
     private JLabel LabelTitle;
     private JPanel panelCenter;
@@ -18,7 +19,7 @@ public class CreateEventGui {
     private JLabel labelEventName;
     private JLabel LabelDescription;
     private JLabel labelLocation;
-    private JButton button1;
+    private JButton buttonSelect;
     private JLabel labelEmpty1;
     private JLabel labelDate;
     private JLabel labelTime;
@@ -29,4 +30,15 @@ public class CreateEventGui {
     private JLabel labelCustomerName;
     private JLabel labelCustomeremail;
     private JLabel labelContactNumber;
+    private JLabel labelCatering;
+    private JTextField tboxCatering;
+    private JPanel PanelSouth;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JButton button4;
+
+    public Container getPanelAddEventFoundation() {
+        return panelAddeventFoundation;
+    }
 }

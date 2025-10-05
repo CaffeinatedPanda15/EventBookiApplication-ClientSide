@@ -36,10 +36,11 @@ public class Main {
 
             // Create an instance of your GUI form
             LoginPageGui loginPage = new LoginPageGui();
+            CreateEventGui createEventGui = new CreateEventGui();
 
             // 🧠 IMPORTANT: Bind your main/root panel in the UI Designer to "panelFoundation"
             // Then add it here:
-            frame.setContentPane(loginPage.getPanelLoginFoundation());
+            frame.setContentPane(createEventGui.getPanelAddEventFoundation());
 
             // Basic window setup
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
