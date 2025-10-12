@@ -34,14 +34,6 @@ public class Main {
             // Create a frame (window)
             JFrame frame = new JFrame("Login Page");
 
-            // Create an instance of your GUI form
-            LoginPageGui loginPage = new LoginPageGui();
-            CreateEventGui createEventGui = new CreateEventGui();
-            RegisterAdminGui registerAdminGui = new RegisterAdminGui();
-
-            // 🧠 IMPORTANT: Bind your main/root panel in the UI Designer to "panelFoundation"
-            // Then add it here:
-            frame.setContentPane(registerAdminGui.getPanelAdminFoundation());
 
             // Basic window setup
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
