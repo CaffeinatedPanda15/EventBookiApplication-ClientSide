@@ -42,9 +42,9 @@ public class GUIs {
     private JPanel panelEdutVenTitle;
     private JLabel panelEditvenTitle;
     private JPanel panelEditvenNavButtons;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
+    private JButton homeButton;
+    private JButton cateringButton;
+    private JButton logoutButton1;
     private JTextField textField1;
     private JLabel labelEventnameEdit;
     private JLabel labelVenueeditDescriptions;
@@ -57,6 +57,7 @@ public class GUIs {
     private JButton editButton;
     private JButton saveButton;
     private JButton clearButton;
+    private JButton deleteButton;
 
 
     public GUIs() {
