@@ -1,41 +1,34 @@
 package za.ac.cput.views;
 
-import org.json.JSONObject;
-import za.ac.cput.factory.eventfactories.EventFactory;
-import za.ac.cput.util.EventClient;
+import za.ac.cput.dao.EventsDAO;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.*;
 
+public class CreateEventPage extends JPanel implements ActionListener {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.List;
-
-
-    public class CreateEventPage extends JPanel implements ActionListener {
     private JPanel panelNorth, panelCenter, panelSouth;
     private JLabel lblTitle, lblName, lblDescription, lblLocation,
             lblDate, lblTime, lblCategory, lblStatus;
     private JTextField txtName, txtDate, txtTime, txtCategory;
     private JTextArea txtDescription;
-    private JComboBox<String> cbxLocation; // Replace String with Venue
-    private JComboBox<String> cbxStatus;   // Replace String with EventStatus
-    private JButton btnCreate;
+    private JComboBox<String> cbxLocation;
+    private JComboBox<String> cbxStatus;
+    private JButton btnSave;
 
     public CreateEventPage(CardLayout cardLayout, JPanel mainPanel) {
-        super();
+        super(new BorderLayout());
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
+
         panelNorth = new JPanel();
         panelCenter = new JPanel(new GridLayout(7, 2, 5, 5));
         panelSouth = new JPanel();
 
-        lblTitle = new JLabel("Create Event");
+        lblTitle = new JLabel("Edit / Create Event");
         lblName = new JLabel("Event Name:");
         lblDescription = new JLabel("Description:");
         lblLocation = new JLabel("Location:");
@@ -53,12 +46,12 @@ import java.util.List;
         cbxLocation = new JComboBox<>(new String[]{"Venue A", "Venue B", "Venue C"});
         cbxStatus = new JComboBox<>(new String[]{"PLANNED", "ONGOING", "COMPLETED"});
 
-        btnCreate = new JButton("Create Event");
+        btnSave = new JButton("Save Event");
 
         setGUI();
     }
 
-    public void setGUI() {
+    private void setGUI() {
         panelNorth.add(lblTitle);
 
         panelCenter.add(lblName);
@@ -82,56 +75,57 @@ import java.util.List;
         panelCenter.add(lblStatus);
         panelCenter.add(cbxStatus);
 
-        panelSouth.add(btnCreate);
+        panelSouth.add(btnSave);
 
-        setLayout(new BorderLayout(10, 10));
         add(panelNorth, BorderLayout.NORTH);
         add(panelCenter, BorderLayout.CENTER);
         add(panelSouth, BorderLayout.SOUTH);
 
-        btnCreate.addActionListener(this);
+        btnSave.addActionListener(this);
     }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String eventName = txtName.getText();
-            String eventDescription = txtDescription.getText();
-            String eventLocation = (String) cbxLocation.getSelectedItem(); // replace with Venue
-            String eventDate = txtDate.getText();
-            String eventTime = txtTime.getText();
-            String category = txtCategory.getText();
-            String status = (String) cbxStatus.getSelectedItem(); // replace with EventStatus
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // get all the fields
+        String name = txtName.getText().trim();
+        String description = txtDescription.getText().trim();
+        String location = (String) cbxLocation.getSelectedItem();
+        String date = txtDate.getText().trim();
+        String time = txtTime.getText().trim();
+        String category = txtCategory.getText().trim();
+        String status = (String) cbxStatus.getSelectedItem();
 
-            try {
-                EventClient eventClient = new EventClient();
-                String message = eventClient.createEvent(
-                        category.trim(),
-                        eventTime.trim(),
-                        eventDate.trim(),
-                        eventDescription.trim(),
-                        eventName.trim()
-                );
-
-                // Just show whatever the backend responded with
-                JOptionPane.showMessageDialog(this, message);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-            }
+        // validate fields
+        if (name.isEmpty() || description.isEmpty() || location.isEmpty() || date.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all mandatory fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
+        // save event using dao so long
+        EventsDAO.saveEvent(name, description, location, date, time, category, status);
 
+        JOptionPane.showMessageDialog(this, "Event saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-      /*  public static void main(String[] args) {
-        JFrame frame = new JFrame("Event Creation");
-        CreateEventPage eventPage = new CreateEventPage();
-        eventPage.setGUI();
+        // return to HomePage
+        if (cardLayout != null && mainPanel != null) {
+            cardLayout.show(mainPanel, "HomePage");
+        }
+    }
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
-        frame.add(eventPage);
-        frame.setVisible(true);
-    }*/
+    // populate fields when an event is selected from HomePage
+    public void loadEvent(String eventData) {
+        // eventData format
+        String[] parts = eventData.split("\\|");
+        if (parts.length >= 6) {
+            txtName.setText(parts[0].split("-",2)[1].trim());
+            txtDescription.setText(parts[1].trim());
+            cbxLocation.setSelectedItem(parts[2].trim());
+            String[] dateTime = parts[3].trim().split(" ");
+            txtDate.setText(dateTime[0]);
+            txtTime.setText(dateTime.length > 1 ? dateTime[1] : "");
+            txtCategory.setText(parts[4].trim());
+            cbxStatus.setSelectedItem(parts[5].trim());
+        }
+    }
 }
 
