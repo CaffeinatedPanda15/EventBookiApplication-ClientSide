@@ -17,76 +17,138 @@ public class CreateEventPage extends JPanel implements ActionListener {
     private JTextArea txtDescription;
     private JComboBox<String> cbxLocation;
     private JComboBox<String> cbxStatus;
-    private JButton btnSave;
+    private JButton btnSave, btnBack;
 
     public CreateEventPage(CardLayout cardLayout, JPanel mainPanel) {
         super(new BorderLayout());
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
 
+        setBackground(new Color(30, 30, 30)); // dark background
+
         panelNorth = new JPanel();
-        panelCenter = new JPanel(new GridLayout(7, 2, 5, 5));
+        panelCenter = new JPanel(new GridBagLayout());
         panelSouth = new JPanel();
 
-        lblTitle = new JLabel("Edit / Create Event");
-        lblName = new JLabel("Event Name:");
-        lblDescription = new JLabel("Description:");
-        lblLocation = new JLabel("Location:");
-        lblDate = new JLabel("Date (YYYY-MM-DD):");
-        lblTime = new JLabel("Time (HH:MM):");
-        lblCategory = new JLabel("Category:");
-        lblStatus = new JLabel("Status:");
+        panelNorth.setBackground(new Color(45, 45, 45));
+        panelCenter.setBackground(new Color(40, 40, 40));
+        panelSouth.setBackground(new Color(45, 45, 45));
 
-        txtName = new JTextField(15);
-        txtDescription = new JTextArea(3, 15);
-        txtDate = new JTextField(15);
-        txtTime = new JTextField(15);
-        txtCategory = new JTextField(15);
+        lblTitle = new JLabel("Create / Edit Event", JLabel.CENTER);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblTitle.setForeground(Color.ORANGE);
+
+        lblName = createStyledLabel("Event Name:");
+        lblDescription = createStyledLabel("Description:");
+        lblLocation = createStyledLabel("Location:");
+        lblDate = createStyledLabel("Date (YYYY-MM-DD):");
+        lblTime = createStyledLabel("Time (HH:MM):");
+        lblCategory = createStyledLabel("Category:");
+        lblStatus = createStyledLabel("Status:");
+
+        txtName = createStyledTextField();
+        txtDescription = createStyledTextArea();
+        txtDate = createStyledTextField();
+        txtTime = createStyledTextField();
+        txtCategory = createStyledTextField();
 
         cbxLocation = new JComboBox<>(new String[]{"Venue A", "Venue B", "Venue C"});
         cbxStatus = new JComboBox<>(new String[]{"PLANNED", "ONGOING", "COMPLETED"});
 
-        btnSave = new JButton("Save Event");
+        styleComboBox(cbxLocation);
+        styleComboBox(cbxStatus);
+
+        btnSave = createStyledButton("💾 Save Event", new Color(255, 140, 0));
+        btnBack = createStyledButton("⬅ Back", new Color(80, 80, 80));
 
         setGUI();
     }
 
+    private JLabel createStyledLabel(String text) {
+        JLabel lbl = new JLabel(text);
+        lbl.setForeground(Color.WHITE);
+        lbl.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        return lbl;
+    }
+
+    private JTextField createStyledTextField() {
+        JTextField txt = new JTextField(15);
+        txt.setBackground(new Color(60, 60, 60));
+        txt.setForeground(Color.WHITE);
+        txt.setCaretColor(Color.WHITE);
+        txt.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        return txt;
+    }
+
+    private JTextArea createStyledTextArea() {
+        JTextArea txt = new JTextArea(3, 15);
+        txt.setLineWrap(true);
+        txt.setWrapStyleWord(true);
+        txt.setBackground(new Color(60, 60, 60));
+        txt.setForeground(Color.WHITE);
+        txt.setCaretColor(Color.WHITE);
+        txt.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        return txt;
+    }
+
+    private JButton createStyledButton(String text, Color bgColor) {
+        JButton btn = new JButton(text);
+        btn.setBackground(bgColor);
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        return btn;
+    }
+
+    private void styleComboBox(JComboBox<String> comboBox) {
+        comboBox.setBackground(new Color(60, 60, 60));
+        comboBox.setForeground(Color.WHITE);
+        comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    }
+
     private void setGUI() {
         panelNorth.add(lblTitle);
-
-        panelCenter.add(lblName);
-        panelCenter.add(txtName);
-
-        panelCenter.add(lblDescription);
-        panelCenter.add(new JScrollPane(txtDescription));
-
-        panelCenter.add(lblLocation);
-        panelCenter.add(cbxLocation);
-
-        panelCenter.add(lblDate);
-        panelCenter.add(txtDate);
-
-        panelCenter.add(lblTime);
-        panelCenter.add(txtTime);
-
-        panelCenter.add(lblCategory);
-        panelCenter.add(txtCategory);
-
-        panelCenter.add(lblStatus);
-        panelCenter.add(cbxStatus);
-
-        panelSouth.add(btnSave);
-
         add(panelNorth, BorderLayout.NORTH);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        gbc.gridx = 0; gbc.gridy = 0; panelCenter.add(lblName, gbc);
+        gbc.gridx = 1; panelCenter.add(txtName, gbc);
+
+        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblDescription, gbc);
+        gbc.gridx = 1; panelCenter.add(new JScrollPane(txtDescription), gbc);
+
+        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblLocation, gbc);
+        gbc.gridx = 1; panelCenter.add(cbxLocation, gbc);
+
+        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblDate, gbc);
+        gbc.gridx = 1; panelCenter.add(txtDate, gbc);
+
+        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblTime, gbc);
+        gbc.gridx = 1; panelCenter.add(txtTime, gbc);
+
+        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblCategory, gbc);
+        gbc.gridx = 1; panelCenter.add(txtCategory, gbc);
+
+        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblStatus, gbc);
+        gbc.gridx = 1; panelCenter.add(cbxStatus, gbc);
+
         add(panelCenter, BorderLayout.CENTER);
+
+        panelSouth.add(btnBack);
+        panelSouth.add(btnSave);
         add(panelSouth, BorderLayout.SOUTH);
 
         btnSave.addActionListener(this);
+        btnBack.addActionListener(e -> cardLayout.show(mainPanel, "HomePage"));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // get all the fields
         String name = txtName.getText().trim();
         String description = txtDescription.getText().trim();
         String location = (String) cbxLocation.getSelectedItem();
@@ -95,29 +157,20 @@ public class CreateEventPage extends JPanel implements ActionListener {
         String category = txtCategory.getText().trim();
         String status = (String) cbxStatus.getSelectedItem();
 
-        // validate fields
-        if (name.isEmpty() || description.isEmpty() || location.isEmpty() || date.isEmpty()) {
+        if (name.isEmpty() || description.isEmpty() || date.isEmpty() || time.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all mandatory fields.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // save event using dao so long
         EventsDAO.saveEvent(name, description, location, date, time, category, status);
-
-        JOptionPane.showMessageDialog(this, "Event saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-        // return to HomePage
-        if (cardLayout != null && mainPanel != null) {
-            cardLayout.show(mainPanel, "HomePage");
-        }
+        JOptionPane.showMessageDialog(this, " Event saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        cardLayout.show(mainPanel, "HomePage");
     }
 
-    // populate fields when an event is selected from HomePage
     public void loadEvent(String eventData) {
-        // eventData format
         String[] parts = eventData.split("\\|");
         if (parts.length >= 6) {
-            txtName.setText(parts[0].split("-",2)[1].trim());
+            txtName.setText(parts[0].split("-", 2)[1].trim());
             txtDescription.setText(parts[1].trim());
             cbxLocation.setSelectedItem(parts[2].trim());
             String[] dateTime = parts[3].trim().split(" ");
@@ -128,4 +181,3 @@ public class CreateEventPage extends JPanel implements ActionListener {
         }
     }
 }
-
