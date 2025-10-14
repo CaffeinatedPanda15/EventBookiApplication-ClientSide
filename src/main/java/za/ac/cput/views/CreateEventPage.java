@@ -58,7 +58,7 @@ public class CreateEventPage extends JPanel implements ActionListener {
         styleComboBox(cbxLocation);
         styleComboBox(cbxStatus);
 
-        btnSave = createStyledButton("💾 Save Event", new Color(255, 140, 0));
+        btnSave = createStyledButton("Save Event", new Color(255, 140, 0));
         btnBack = createStyledButton("⬅ Back", new Color(80, 80, 80));
 
         setGUI();
