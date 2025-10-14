@@ -31,15 +31,13 @@ public class Main {
         frame.setVisible(true);*/
 
         SwingUtilities.invokeLater(() -> {
-            // Create a frame (window)
-            JFrame frame = new JFrame("Login Page");
-
-
-            // Basic window setup
+            JFrame frame = new JFrame("EventBookingApplication");
+            GUIs guis = new GUIs();
+            frame.setContentPane(guis.getPanelRoot());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 500);
-            frame.setLocationRelativeTo(null); // center window
+            frame.setSize(1000, 700);
             frame.setVisible(true);
+
         });
 
 

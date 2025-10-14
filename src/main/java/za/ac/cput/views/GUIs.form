@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="za.ac.cput.views.GUIs">
   <grid id="27dc6" binding="panelRoot" layout-manager="CardLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="500" height="403"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -219,15 +219,135 @@
       </grid>
       <grid id="643b3" binding="panelVenuePage" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
-          <card name=""/>
+          <card name="venue"/>
         </constraints>
         <properties/>
         <border type="none"/>
-        <children/>
+        <children>
+          <grid id="3c8b3" binding="panelVenueNorth" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="North"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="9f55b" binding="panelVenueTitle" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="North"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="708ac" class="javax.swing.JLabel" binding="labelVenueTitle">
+                    <constraints/>
+                    <properties>
+                      <font size="28" style="1"/>
+                      <text value="Venue's"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="7ffb2" binding="panelVenueNavButtons" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="South"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="dc77e" class="javax.swing.JButton" binding="buttonVenueHome">
+                    <constraints/>
+                    <properties>
+                      <text value="Home"/>
+                    </properties>
+                  </component>
+                  <component id="3b40b" class="javax.swing.JButton" binding="buttonVenueCatering">
+                    <constraints/>
+                    <properties>
+                      <text value="Catering"/>
+                    </properties>
+                  </component>
+                  <component id="4e671" class="javax.swing.JButton" binding="buttonVenueAddAdmin">
+                    <constraints/>
+                    <properties>
+                      <text value="Register Admin"/>
+                    </properties>
+                  </component>
+                  <component id="909e2" class="javax.swing.JButton" binding="buttonVenueLogout">
+                    <constraints/>
+                    <properties>
+                      <label value="Logout"/>
+                      <text value="Logout"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="20b12" binding="panelVenueEast" layout-manager="GridBagLayout">
+            <constraints border-constraint="East"/>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="6726c" binding="panelVenueSouth" layout-manager="GridBagLayout">
+            <constraints border-constraint="South"/>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="3c5f3" binding="panelVenueWest" layout-manager="GridBagLayout">
+            <constraints border-constraint="West"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="feff4" class="javax.swing.JButton" binding="refreshVenueButton">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Refresh"/>
+                </properties>
+              </component>
+              <component id="eab2a" class="javax.swing.JButton" binding="buttonAddVenue">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Add Venue"/>
+                </properties>
+              </component>
+              <component id="5bc8a" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="42ecb" binding="panelVenueCenter" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="95c54" binding="jscrollVenue">
+                <constraints/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="17970" binding="panelVenueList" layout-manager="GridBagLayout">
+                    <constraints/>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
       </grid>
       <grid id="91eac" binding="paneleditvenue" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
-          <card name="Card1"/>
+          <card name="editvenue"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -284,7 +404,8 @@
                   <component id="47876" class="javax.swing.JLabel">
                     <constraints/>
                     <properties>
-                      <text value="Label"/>
+                      <preferredSize width="24" height="24"/>
+                      <text value=""/>
                     </properties>
                   </component>
                 </children>
@@ -416,15 +537,18 @@
                   </grid>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                </properties>
               </component>
-              <component id="d2c8" class="javax.swing.JLabel">
+              <component id="d2c8" class="javax.swing.JLabel" binding="labelEmpty1">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <preferredSize width="24" height="24"/>
+                  <text value=""/>
                 </properties>
               </component>
               <component id="ad2c" class="javax.swing.JLabel" binding="labelVenueeditDescriptions">
@@ -446,7 +570,9 @@
                 <children>
                   <component id="80a90" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <editable value="false"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
@@ -475,7 +601,9 @@
                   </grid>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                </properties>
               </component>
               <component id="99692" class="javax.swing.JTextField" binding="textField3" default-binding="true">
                 <constraints>
@@ -486,13 +614,14 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="21659" class="javax.swing.JLabel">
+              <component id="21659" class="javax.swing.JLabel" binding="labelEmpty2">
                 <constraints>
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <preferredSize width="24" height="24"/>
+                  <text value=""/>
                 </properties>
               </component>
               <component id="7bcbe" class="javax.swing.JLabel">
@@ -513,43 +642,27 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="bacfb" class="javax.swing.JLabel">
+              <component id="bacfb" class="javax.swing.JLabel" binding="labelEmpty3">
                 <constraints>
-                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <opaque value="false"/>
+                  <preferredSize width="24" height="24"/>
+                  <text value=""/>
                 </properties>
               </component>
               <component id="c0f2e" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <text value="Label"/>
                 </properties>
               </component>
-              <component id="3604f" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <text value="Label"/>
-                </properties>
-              </component>
-              <component id="8c2d5" class="javax.swing.JButton" binding="button4" default-binding="true">
-                <constraints>
-                  <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <text value="Button"/>
-                </properties>
-              </component>
-              <component id="b3572" class="javax.swing.JLabel">
+              <component id="3604f" class="javax.swing.JLabel" binding="labelVenueImage">
                 <constraints>
                   <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
@@ -558,9 +671,47 @@
                   <text value="Label"/>
                 </properties>
               </component>
-              <component id="b6e34" class="javax.swing.JLabel">
+              <component id="8c2d5" class="javax.swing.JButton" binding="button4" default-binding="true">
                 <constraints>
-                  <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Button"/>
+                </properties>
+              </component>
+              <component id="b3572" class="javax.swing.JLabel" binding="labelEmpty4">
+                <constraints>
+                  <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <preferredSize width="24" height="24"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="b6e34" class="javax.swing.JLabel" binding="labelEmpty5">
+                <constraints>
+                  <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <preferredSize width="24" height="24"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="77c01" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+              <component id="b2b5" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="12" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
