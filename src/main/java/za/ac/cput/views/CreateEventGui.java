@@ -86,8 +86,8 @@ public class CreateEventGui extends JFrame implements ActionListener {
         String catering = tboxCatering.getText();
         String customerName = tboxCustomername.getText();
         String email = tboxCustomerEmail.getText();
-        String category = (String) cboxCategory.getSelectedItem();
         String contact = textField9.getText();
+        String category = (String) cboxCategory.getSelectedItem();
         String status = (String) cboxStatus.getSelectedItem();
 
         try {
