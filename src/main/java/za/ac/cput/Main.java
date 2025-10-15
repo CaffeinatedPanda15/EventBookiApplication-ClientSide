@@ -7,6 +7,18 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("EventBookingApplication");
+            GUIs guis = new GUIs();
+            frame.setContentPane(guis.getPanelRoot());
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 700);
+            frame.setVisible(true);
+
+        });
+
+
     /*    JFrame frame = new JFrame("EventBookingApplication");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
@@ -30,15 +42,7 @@ public class Main {
         frame.add(mainPanel);
         frame.setVisible(true);*/
 
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("EventBookingApplication");
-            GUIs guis = new GUIs();
-            frame.setContentPane(guis.getPanelRoot());
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1000, 700);
-            frame.setVisible(true);
 
-        });
 
 
 
