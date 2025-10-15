@@ -64,15 +64,14 @@ public class CreateEventGui extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
 
-        if (source == buttonSave) {
+        if (e.getSource() == buttonSave) {
             saveEvent();
-        } else if (source == buttonClear) {
+        } else if (e.getSource() == buttonClear) {
             clearFields();
-        } else if (source == editButton) {
+        } else if (e.getSource() == editButton) {
             JOptionPane.showMessageDialog(this, "Edit feature coming soon!");
-        } else if (source == cancelButton) {
+        } else if (e.getSource() == cancelButton) {
             dispose(); // closes the window
         }
     }
