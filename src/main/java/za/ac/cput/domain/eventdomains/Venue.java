@@ -1,14 +1,13 @@
 package za.ac.cput.domain.eventdomains;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 
 @Entity
 public class Venue {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int venueId;
     protected String venueName;
     protected String venueDescription;
