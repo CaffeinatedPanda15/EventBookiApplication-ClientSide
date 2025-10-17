@@ -1,7 +1,11 @@
 package za.ac.cput.views;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import org.json.JSONObject;
+import za.ac.cput.domain.endusers.Admin;
 import za.ac.cput.domain.eventdomains.Venue;
 
 import javax.swing.*;
@@ -81,7 +85,7 @@ public class GUIs {
     private JPanel panelVenueNavButtons;
     private JButton buttonVenueHome;
     private JButton buttonVenueCatering;
-    private JButton buttonVenueAddAdmin;
+    private JButton buttonVenueDisplayAdmin;
     private JButton buttonVenueLogout;
     private JPanel panelVenueList;
     private JScrollPane jscrollVenue;
@@ -89,7 +93,7 @@ public class GUIs {
     private JButton refreshVenueButton;
     private JLabel labelVenueImage;
     private JButton buttonAddVenue;
-    private JButton buttonHomeRegisterAdmin;
+    private JButton buttonHomeDisplayAdmin;
     private JPanel panelAddAdminNorth;
     private JPanel panelAddAdminEast;
     private JPanel panelAddAdminSouth;
@@ -159,6 +163,25 @@ public class GUIs {
     private JTextField textField4;
     private JTextField textField5;
     private JButton button8;
+    private JPanel panelDisplayAdmin;
+    private JPanel panelDisplayAdminNorth;
+    private JPanel panelDisplayAdminEast;
+    private JPanel panelDisplayAdminSouth;
+    private JPanel panelDisplayAdminWest;
+    private JPanel panelDisplayAdminCenter;
+    private JScrollPane jScrollAdmins;
+    private JPanel panelAdminList;
+    private JPanel panlDisplayAdminTitle;
+    private JPanel panlDisplayAdminNavButtons;
+    private JButton button9;
+    private JButton button10;
+    private JButton button11;
+    private JButton button12;
+    private JPanel panelDisplayAdminButtons;
+    private JButton buttonAddingAdmin;
+    private JButton buttonRefreshAdminList;
+    private JLabel labelAdminDetailsTitle;
+    private JLabel labelAddAdminTItle;
 
     private final CardLayout cardLayout;
 
@@ -175,10 +198,24 @@ public class GUIs {
         panelRoot.add(panelCateringPage, "catering");
         panelRoot.add(panelVenuePage, "venue");
         panelRoot.add(paneleditvenue, "editvenue");
+        panelRoot.add(panelDisplayAdmin, "viewAdmins");
+
+        jScrollAdmins.setViewportView(panelAdminList);
+        jScrollAdmins.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jScrollAdmins.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        jscrollVenue.setViewportView(panelVenueList);
+
+        panelAdminList.setLayout(new BoxLayout(panelAdminList, BoxLayout.Y_AXIS));
+        panelAdminList.setBackground(new Color(245, 245, 245));
+
 
         //Login  Buttons
         buttonLogin.addActionListener(e -> loginAdmin());
         buttonClear.addActionListener(e -> clearLoginFields());
+
+        //Display Admin Buttons
+        buttonAddingAdmin.addActionListener(e -> cardLayout.show(panelRoot, "addAdmin"));
 
         //Register Admin Buttons
         buttonAdminRegister.addActionListener(e -> registerAdmin());
@@ -193,12 +230,13 @@ public class GUIs {
         buttonCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
         venueButton.addActionListener(e -> {cardLayout.show(panelRoot, "venue"); refreshVenueList();});
         logoutButton.addActionListener(e -> cardLayout.show(panelRoot, "login"));
-        buttonHomeRegisterAdmin.addActionListener(e -> cardLayout.show(panelRoot, "addAdmin"));
+        buttonHomeDisplayAdmin.addActionListener((e -> {cardLayout.show(panelRoot, "viewAdmins"); loadAdmins();}));
+
 
         //Venue Buttons
         buttonVenueHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
         buttonVenueCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
-        buttonVenueAddAdmin.addActionListener(e -> cardLayout.show(panelRoot, "addAdmin"));
+        buttonVenueDisplayAdmin.addActionListener(e -> cardLayout.show(panelRoot, "viewAdmins"));
         buttonVenueLogout.addActionListener(e -> cardLayout.show(panelRoot, "login"));
         buttonAddVenue.addActionListener(e -> cardLayout.show(panelRoot, "editvenue"));
         refreshVenueButton.addActionListener(e -> refreshVenueList());
@@ -214,8 +252,16 @@ public class GUIs {
         deleteButton.addActionListener(e -> DeleteVenue());
         buttonAddImage.addActionListener(e -> uploadVenueImage());
 
+        //Catering Buttons
+
+        buttonCateringHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        buttonCateringEvents.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
+        buttonCateringVenue.addActionListener(e -> cardLayout.show(panelRoot, "venue"));
+        buttonCateringLogoff.addActionListener(e -> cardLayout.show(panelRoot, "login"));
+
 
     }
+
 //start of register admin
 
     private void registerAdmin() {
@@ -226,29 +272,25 @@ public class GUIs {
             String password = tboxAddAdminPassword.getText();
             String status = (String) cboxAddAdminStatus.getSelectedItem();
             String createdBy = tboxAddAdminCreatedBy.getText();
-            String createdDate = tboxAddAdminCreatedDate.getText();
 
-            if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || password.isEmpty() ||
-                    status == null || createdBy.isEmpty() || createdDate.isEmpty()) {
+            if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || password.isEmpty() || status == null || status.isEmpty() || createdBy.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String json = String.format(
-                    "{\"username\":\"%s\",\"fullName\":\"%s\",\"emailAddress\":\"%s\",\"password\":\"%s\",\"status\":\"%s\",\"createdBy\":\"%s\",\"createdDate\":\"%s\"}",
-                    username, fullName, email, password, status, createdBy, createdDate
-            );
+            String json = String.format("{\"userName\":\"%s\",\"fullName\":\"%s\",\"emailAddress\":\"%s\",\"password\":\"%s\",\"status\":\"%s\",\"createdBy\":\"%s\"}",
+                    username, fullName, email, password, status, createdBy);
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/admin/register"))
+                    .uri(URI.create("http://localhost:8080/admin/create?currentAdminUsername=" + createdBy))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 201) {
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
                 JOptionPane.showMessageDialog(null, "✅ Admin registered successfully!");
                 clearAdminFields();
                 cardLayout.show(panelRoot, "home");
@@ -259,6 +301,7 @@ public class GUIs {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "⚠️ Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//end of register admin method
 
 
@@ -273,9 +316,95 @@ public class GUIs {
     }//end of clearAdminFields method
 
 
+//end of register admin method and start of display admin
+
+    private java.util.List<Admin> fetchedAdmins() {
+        java.util.List<Admin> admins = new java.util.ArrayList<>();
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/admin/getAll"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                String responseBody = response.body();
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                Admin[] adminArray = mapper.readValue(responseBody, Admin[].class);
+                admins = java.util.Arrays.asList(adminArray);
+            } else {
+                JOptionPane.showMessageDialog(null, "❌ Failed to load admins.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "⚠️ Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return admins;
+    }
 
 
-    //end of register admin and start of login page
+    public void loadAdmins() {
+        panelAdminList.removeAll();
+
+        java.util.List<Admin> admins = fetchedAdmins();
+
+        if (admins.isEmpty()) {
+            JLabel noAdminsLabel = new JLabel("No admins found.");
+            noAdminsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+            noAdminsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            panelAdminList.setLayout(new BorderLayout());
+            panelAdminList.add(noAdminsLabel, BorderLayout.CENTER);
+        } else {
+            panelAdminList.setLayout(new BoxLayout(panelAdminList, BoxLayout.Y_AXIS));
+
+            for (int i = 0; i < admins.size(); i += 3) {
+                JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+                rowPanel.setBackground(new Color(245, 245, 245));
+
+                for (int j = i; j < i + 3 && j < admins.size(); j++) {
+                    Admin admin = admins.get(j);
+
+                    JPanel adminBox = new JPanel();
+                    adminBox.setLayout(new GridLayout(0, 1, 5, 2));
+                    adminBox.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                    adminBox.setBackground(new Color(240, 240, 240));
+                    adminBox.setPreferredSize(new Dimension(300, 150));
+
+                    adminBox.add(new JLabel("Username: " + admin.getUserName()));
+                    adminBox.add(new JLabel("Full Name: " + admin.getFullName()));
+                    adminBox.add(new JLabel("Email: " + admin.getEmailAddress()));
+                    adminBox.add(new JLabel("Status: " + admin.getStatus()));
+                    adminBox.add(new JLabel("Created By: " + admin.getCreatedBy()));
+                    adminBox.add(new JLabel("Created Date: " + admin.getCreatedDate()));
+                    adminBox.add(new JLabel("Last Login: " + (admin.getLastLogin() != null ? admin.getLastLogin() : "Never")));
+
+                    rowPanel.add(adminBox);
+                }
+
+                panelAdminList.add(rowPanel);
+            }
+
+            // Fix the preferred size to make JScrollPane scroll properly
+            panelAdminList.setPreferredSize(null); // reset
+            panelAdminList.revalidate(); // force recalculation
+        }
+
+        panelAdminList.revalidate();
+        panelAdminList.repaint();
+    }//end of display admin method
+
+
+
+
+    //end of display admin method and start of login
+
+
     private void loginAdmin() {
         try {
             String email = tboxUsername.getText();
