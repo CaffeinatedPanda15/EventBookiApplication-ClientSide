@@ -1,145 +1,142 @@
 package za.ac.cput.views;
 
 import za.ac.cput.dao.EventsDAO;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class HomePage extends JPanel {
-
-    private JPanel panelNorth;
-    private JLabel labelLogo;
-    private JLabel labelTitle;
-    private JButton buttonHome;
-    private JButton buttonEvents;
-    private JButton buttonVenues;
-    private JButton buttonOther;
-    private JPanel panelWest;
-    private JPanel panelCentre;
-
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private CreateEventPage createEventPage;
+    private JList<String> eventsList;
 
-    public HomePage(CardLayout cardLayout, JPanel mainPanel) {
+    public HomePage(CardLayout cardLayout, JPanel mainPanel, CreateEventPage createEventPage) {
         super(new BorderLayout());
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
-        setOpaque(false);
+        this.createEventPage = createEventPage;
+        setOpaque(true);
+        setBackground(new Color(30, 30, 30));
         setGUI();
     }
 
     private JButton createNavButton(String text) {
         JButton button = new JButton(text);
-        button.setBackground(new Color(50, 50, 50, 180));
+        button.setBackground(new Color(50, 50, 50, 200));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorderPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
         button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setOpaque(true);
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(70, 70, 70, 220));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(50, 50, 50, 200));
+            }
+        });
         return button;
     }
 
     public void setGUI() {
-        // north panel with gradient, logo, title
-        panelNorth = new JPanel(new GridLayout(3, 1)) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                GradientPaint gp = new GradientPaint(0, 0, new Color(0, 128, 128), 0, getHeight(), new Color(255, 111, 97));
-                g2d.setPaint(gp);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
-        panelNorth.setOpaque(false);
+        // top panel
+        JPanel panelNorth = new JPanel(new BorderLayout());
+        panelNorth.setBackground(new Color(40, 40, 40, 220));
+        panelNorth.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-        // Logo
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Logo.jpg"));
-        int width = 100;
-        int height = (originalIcon.getIconHeight() * width) / originalIcon.getIconWidth();
-        ImageIcon logoIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
-        labelLogo = new JLabel(logoIcon);
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        // left panel
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         logoPanel.setOpaque(false);
-        logoPanel.add(labelLogo);
-        panelNorth.add(logoPanel);
 
-        // Title
-        labelTitle = new JLabel("Homepage", JLabel.CENTER);
-        labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        labelTitle.setForeground(Color.WHITE);
-        JPanel rowTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        rowTitle.setOpaque(false);
-        rowTitle.add(labelTitle);
-        panelNorth.add(rowTitle);
+        try {
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Logo.jpg"));
+            Image scaledImage = originalIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoPanel.add(logoLabel);
+        } catch (Exception e) {
+            JLabel placeholder = new JLabel("[Logo]");
+            placeholder.setForeground(Color.LIGHT_GRAY);
+            placeholder.setFont(new Font("Arial", Font.ITALIC, 16));
+            logoPanel.add(placeholder);
+        }
 
-        // Navigation buttons
-        buttonHome = createNavButton("Home");
-        buttonEvents = createNavButton("Create Events");
-        buttonVenues = createNavButton("Venues");
-        buttonOther = createNavButton("Register new Admin");
+        JLabel lblTitle = new JLabel("Event Booking Dashboard");
+        lblTitle.setForeground(Color.WHITE);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        logoPanel.add(lblTitle);
 
-        // Action listener to navigate to CreateEventPage
-        buttonEvents.addActionListener(e -> cardLayout.show(mainPanel, "CreateEventPage"));
-        buttonOther.addActionListener( e -> cardLayout.show(mainPanel, "registerAdminPage"));
+        panelNorth.add(logoPanel, BorderLayout.WEST);
 
+        // right panel
+        JPanel navPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        navPanel.setOpaque(false);
 
-        JPanel navigationRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-        navigationRow.setOpaque(false);
-        navigationRow.add(buttonHome);
-        navigationRow.add(buttonEvents);
-        navigationRow.add(buttonVenues);
-        navigationRow.add(buttonOther);
-        panelNorth.add(navigationRow);
+        JButton btnHome = createNavButton("Home");
+        JButton btnAdd = createNavButton("Add Event");
 
+        btnAdd.addActionListener(e -> {
+            createEventPage.loadEvent("");
+            cardLayout.show(mainPanel, "CreateEventPage");
+        });
+
+        btnHome.addActionListener(e -> cardLayout.show(mainPanel, "HomePage"));
+
+        navPanel.add(btnHome);
+        navPanel.add(btnAdd);
+
+        panelNorth.add(navPanel, BorderLayout.EAST);
         add(panelNorth, BorderLayout.NORTH);
 
-        // west panel
-        panelWest = new JPanel();
-        panelWest.setOpaque(false);
-        panelWest.setLayout(new BoxLayout(panelWest, BoxLayout.Y_AXIS));
-        panelWest.add(Box.createVerticalGlue());
-        add(panelWest, BorderLayout.WEST);
-
-        // center panel with event list
-        panelCentre = new JPanel(new BorderLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                GradientPaint gp = new GradientPaint(0, 0, new Color(0, 128, 128), 0, getHeight(), new Color(255, 111, 97));
-                g2d.setPaint(gp);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
-        panelCentre.setOpaque(false);
+        // centre panel
+        JPanel panelCentre = new JPanel(new BorderLayout(10, 10));
+        panelCentre.setBackground(new Color(45, 45, 45));
+        panelCentre.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
         JLabel centerTitle = new JLabel("Available Events", JLabel.CENTER);
-        centerTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        centerTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        centerTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         centerTitle.setForeground(Color.WHITE);
         panelCentre.add(centerTitle, BorderLayout.NORTH);
 
         List<String> events = EventsDAO.getAllEvents();
-        if (events.isEmpty()) {
-            events = List.of("No events available");
-        }
+        if (events.isEmpty()) events = List.of("No events available");
 
-        JList<String> eventsList = new JList<>(events.toArray(new String[0]));
+        eventsList = new JList<>(events.toArray(new String[0]));
+        eventsList.setBackground(new Color(60, 60, 60));
+        eventsList.setForeground(Color.WHITE);
+        eventsList.setSelectionBackground(new Color(80, 80, 80));
+        eventsList.setSelectionForeground(Color.ORANGE);
+        eventsList.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         eventsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        eventsList.setOpaque(false);
-        eventsList.setForeground(Color.BLACK);
 
         JScrollPane scrollPane = new JScrollPane(eventsList);
-        scrollPane.setPreferredSize(new Dimension(600, 400));
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(70, 70, 70)));
         panelCentre.add(scrollPane, BorderLayout.CENTER);
+
         add(panelCentre, BorderLayout.CENTER);
+
+        // south panel
+        JPanel panelSouth = new JPanel();
+        panelSouth.setBackground(new Color(35, 35, 35, 220));
+        JLabel footer = new JLabel("© 2025 EventBooki Application");
+        footer.setForeground(Color.GRAY);
+        footer.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        panelSouth.add(footer);
+        add(panelSouth, BorderLayout.SOUTH);
+
+        // funtionality
+        eventsList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedEvent = eventsList.getSelectedValue();
+                if (selectedEvent != null && !selectedEvent.equals("No events available")) {
+                    createEventPage.loadEvent(selectedEvent);
+                    cardLayout.show(mainPanel, "CreateEventPage");
+                }
+            }
+        });
     }
 }
+
+

@@ -1,14 +1,13 @@
 package za.ac.cput.domain.eventdomains;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 
 import java.util.Arrays;
 
 @Entity
 public class Catering {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int cateringId;
     protected String cateringName;
     protected String cateringType;
