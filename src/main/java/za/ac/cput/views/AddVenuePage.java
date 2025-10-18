@@ -4,82 +4,78 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import org.json.JSONObject;
 
-public class AddVenuePage extends JPanel implements ActionListener {
-    private JPanel panelNorth, panelCenter, panelSouth;
-    private JLabel lblTitle, lblVenueName, lblVenueAddress, lblVenueCapacity;
-    private JTextField txtVenueName, txtVenueAddress, txtVenueCapacity;
-    private JButton btnSave;
+public class AddVenuePage extends JFrame implements ActionListener {
+
+    private JTextField txtName, txtAddress, txtCapacity, txtPrice;
+    private JTextArea txtDescription;
+    private JButton btnSubmit;
 
     public AddVenuePage() {
-        super();
-        panelNorth = new JPanel();
-        panelCenter = new JPanel(new GridLayout(3, 2, 5, 5));
-        panelSouth = new JPanel();
+        setTitle("Add New Venue");
+        setSize(600, 500);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(6, 2, 10, 10));
 
-        lblTitle = new JLabel("Add Venue");
-        lblVenueName = new JLabel("Venue Name:");
-        lblVenueAddress = new JLabel("Venue Address:");
-        lblVenueCapacity = new JLabel("Capacity:");
+        add(new JLabel("Venue Name:"));
+        txtName = new JTextField(); add(txtName);
 
-        txtVenueName = new JTextField(15);
-        txtVenueAddress = new JTextField(15);
-        txtVenueCapacity = new JTextField(15);
+        add(new JLabel("Address:"));
+        txtAddress = new JTextField(); add(txtAddress);
 
-        btnSave = new JButton("Save Venue");
-    }
+        add(new JLabel("Description:"));
+        txtDescription = new JTextArea(3, 20);
+        add(new JScrollPane(txtDescription));
 
-    public void setGUI() {
-        panelNorth.add(lblTitle);
+        add(new JLabel("Capacity:"));
+        txtCapacity = new JTextField(); add(txtCapacity);
 
-        panelCenter.add(lblVenueName);
-        panelCenter.add(txtVenueName);
+        add(new JLabel("Price (R):"));
+        txtPrice = new JTextField(); add(txtPrice);
 
-        panelCenter.add(lblVenueAddress);
-        panelCenter.add(txtVenueAddress);
+        btnSubmit = new JButton("Submit");
+        btnSubmit.setBackground(new Color(0, 153, 0));
+        btnSubmit.setForeground(Color.WHITE);
+        btnSubmit.addActionListener(this);
+        add(new JLabel()); // empty cell
+        add(btnSubmit);
 
-        panelCenter.add(lblVenueCapacity);
-        panelCenter.add(txtVenueCapacity);
-
-        panelSouth.add(btnSave);
-
-        setLayout(new BorderLayout(10, 10));
-        add(panelNorth, BorderLayout.NORTH);
-        add(panelCenter, BorderLayout.CENTER);
-        add(panelSouth, BorderLayout.SOUTH);
-
-        btnSave.addActionListener(this);
+        setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String venueName = txtVenueName.getText();
-        String venueAddress = txtVenueAddress.getText();
-        int venueCapacity = 0;
-
         try {
-            venueCapacity = Integer.parseInt(txtVenueCapacity.getText());
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid number for capacity.",
-                    "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            JSONObject obj = new JSONObject();
+            obj.put("venueName", txtName.getText());
+            obj.put("venueAddress", txtAddress.getText());
+            obj.put("venueDescription", txtDescription.getText());
+            obj.put("venueCapacity", Integer.parseInt(txtCapacity.getText()));
+            obj.put("venuePrice", Double.parseDouble(txtPrice.getText()));
+
+            URL url = new URL("http://localhost:8080/api/venue");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json");
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(obj.toString().getBytes());
+            }
+
+            if (conn.getResponseCode() == 201) {
+                JOptionPane.showMessageDialog(this, "Venue created successfully!");
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to create venue. Response: " + conn.getResponseCode());
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
-
-        JOptionPane.showMessageDialog(this,
-                "Venue Saved:\n" +
-                        "Name: " + venueName + "\n" +
-                        "Address: " + venueAddress + "\n" +
-                        "Capacity: " + venueCapacity);
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Add Venue");
-        AddVenuePage venuePage = new AddVenuePage();
-        venuePage.setGUI();
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 250);
-        frame.add(venuePage);
-        frame.setVisible(true);
     }
 }
