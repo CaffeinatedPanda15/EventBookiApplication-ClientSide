@@ -1,22 +1,20 @@
 package za.ac.cput.views;
 
-import za.ac.cput.domain.eventdomains.Catering;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.Base64;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.*;
+import java.util.List;
+import org.json.*;
 
 public class AddCateringPage extends JFrame {
 
-    private JComboBox<String> cateringIdComboBox;
+    // UI Components
+    private JComboBox<Integer> cateringIdComboBox;
     private JTextField cateringNameField;
     private JTextField cateringTypeField;
     private JTextArea cateringDescriptionArea;
@@ -35,80 +33,86 @@ public class AddCateringPage extends JFrame {
 
     public AddCateringPage() {
         setTitle("Catering Management");
-        setSize(550, 700);
+        setSize(600, 650);
+        setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(null);
 
+        // Label + ComboBox for Catering IDs
         JLabel comboLabel = new JLabel("Select Catering ID:");
         comboLabel.setBounds(20, 20, 150, 25);
         add(comboLabel);
 
         cateringIdComboBox = new JComboBox<>();
-        cateringIdComboBox.setBounds(180, 20, 250, 25);
-        cateringIdComboBox.setEditable(false);
+        cateringIdComboBox.setBounds(170, 20, 150, 25);
+        cateringIdComboBox.setEnabled(false);
         add(cateringIdComboBox);
 
         editButton = new JButton("Edit");
-        editButton.setBounds(440, 20, 80, 25);
+        editButton.setBounds(340, 20, 100, 25);
         add(editButton);
 
+        // Name
         JLabel nameLabel = new JLabel("Catering Name:");
-        nameLabel.setBounds(20, 60, 120, 25);
+        nameLabel.setBounds(20, 60, 150, 25);
         add(nameLabel);
 
         cateringNameField = new JTextField();
-        cateringNameField.setBounds(150, 60, 300, 25);
+        cateringNameField.setBounds(170, 60, 350, 25);
         add(cateringNameField);
 
+        // Type
         JLabel typeLabel = new JLabel("Catering Type:");
-        typeLabel.setBounds(20, 100, 120, 25);
+        typeLabel.setBounds(20, 100, 150, 25);
         add(typeLabel);
 
         cateringTypeField = new JTextField();
-        cateringTypeField.setBounds(150, 100, 300, 25);
+        cateringTypeField.setBounds(170, 100, 350, 25);
         add(cateringTypeField);
 
+        // Description
         JLabel descLabel = new JLabel("Description:");
-        descLabel.setBounds(20, 140, 120, 25);
+        descLabel.setBounds(20, 140, 150, 25);
         add(descLabel);
 
         cateringDescriptionArea = new JTextArea();
-        cateringDescriptionArea.setLineWrap(true);
-        cateringDescriptionArea.setWrapStyleWord(true);
         JScrollPane descScroll = new JScrollPane(cateringDescriptionArea);
-        descScroll.setBounds(150, 140, 300, 80);
+        descScroll.setBounds(170, 140, 350, 80);
         add(descScroll);
 
+        // Price
         JLabel priceLabel = new JLabel("Price:");
-        priceLabel.setBounds(20, 240, 120, 25);
+        priceLabel.setBounds(20, 240, 150, 25);
         add(priceLabel);
 
         cateringPriceField = new JTextField();
-        cateringPriceField.setBounds(150, 240, 300, 25);
+        cateringPriceField.setBounds(170, 240, 350, 25);
         add(cateringPriceField);
 
+        // Contact
         JLabel contactLabel = new JLabel("Contact:");
-        contactLabel.setBounds(20, 280, 120, 25);
+        contactLabel.setBounds(20, 280, 150, 25);
         add(contactLabel);
 
         cateringContactField = new JTextField();
-        cateringContactField.setBounds(150, 280, 300, 25);
+        cateringContactField.setBounds(170, 280, 350, 25);
         add(cateringContactField);
 
+        // Image
         JLabel imageLabel = new JLabel("Image:");
-        imageLabel.setBounds(20, 320, 120, 25);
+        imageLabel.setBounds(20, 320, 150, 25);
         add(imageLabel);
 
         cateringImageLabel = new JLabel("No Image Selected", SwingConstants.CENTER);
-        cateringImageLabel.setBounds(150, 320, 200, 150);
+        cateringImageLabel.setBounds(170, 320, 200, 150);
         cateringImageLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         add(cateringImageLabel);
 
         uploadImageButton = new JButton("Upload Image");
-        uploadImageButton.setBounds(360, 400, 140, 25);
+        uploadImageButton.setBounds(380, 370, 140, 25);
         add(uploadImageButton);
 
+        // Buttons
         saveButton = new JButton("Save");
         saveButton.setBounds(100, 500, 100, 30);
         add(saveButton);
@@ -124,164 +128,187 @@ public class AddCateringPage extends JFrame {
         add(deleteButton);
 
         cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(220, 550, 100, 30);
+        cancelButton.setBounds(480, 500, 100, 30);
         add(cancelButton);
 
-        loadCateringIds();
-
+        // Action Listeners
         uploadImageButton.addActionListener(new UploadImageListener());
-        saveButton.addActionListener(new SaveCateringListener());
-        editButton.addActionListener(new EditButtonListener());
+        saveButton.addActionListener(new SaveListener());
+        editButton.addActionListener(new EditListener());
         submitEditButton.addActionListener(new SubmitEditListener());
         deleteButton.addActionListener(new DeleteListener());
-        cateringIdComboBox.addActionListener(new ComboBoxSelectListener());
         cancelButton.addActionListener(new CancelListener());
+        cateringIdComboBox.addActionListener(new ComboSelectionListener());
 
         setVisible(true);
     }
 
-    private void loadCateringIds() {
-        try {
-            URL url = new URL("http://localhost:8080/api/catering/all");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            if (conn.getResponseCode() == 200) {
-                InputStream input = conn.getInputStream();
-                String response = new String(input.readAllBytes());
-                JSONArray array = new JSONArray(response);
-
-                cateringIdComboBox.removeAllItems();
-
-                if (array.length() == 0) {
-                    JOptionPane.showMessageDialog(this, "No catering IDs found.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject obj = array.getJSONObject(i);
-                    cateringIdComboBox.addItem(String.valueOf(obj.getLong("cateringId")));
-                }
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to load catering IDs.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error loading catering IDs: " + ex.getMessage());
-        }
-    }
-
-    // Fetch record details when a catering ID is selected
-    private void populateCateringDetails(String id) {
-        try {
-            URL url = new URL("http://localhost:8080/api/catering/" + id);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            if (conn.getResponseCode() == 200) {
-                String response = new String(conn.getInputStream().readAllBytes());
-                JSONObject obj = new JSONObject(response);
-
-                cateringNameField.setText(obj.getString("cateringName"));
-                cateringTypeField.setText(obj.getString("cateringType"));
-                cateringDescriptionArea.setText(obj.getString("cateringDescription"));
-                cateringPriceField.setText(String.valueOf(obj.getDouble("cateringPrice")));
-                cateringContactField.setText(obj.getString("cateringContact"));
-
-                String img = obj.optString("cateringImage", "");
-                if (!img.isEmpty()) {
-                    cateringImageBytes = Base64.getDecoder().decode(img);
-                    cateringImageLabel.setText("Image Loaded");
-                } else {
-                    cateringImageLabel.setText("No Image");
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error populating catering details: " + e.getMessage());
-        }
-    }
+    // ----------- LISTENERS ------------ //
 
     private class UploadImageListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooser chooser = new JFileChooser();
             int option = chooser.showOpenDialog(AddCateringPage.this);
-
             if (option == JFileChooser.APPROVE_OPTION) {
                 File file = chooser.getSelectedFile();
                 try {
-                    // Read image file into byte array
                     cateringImageBytes = Files.readAllBytes(file.toPath());
-
-                    // Load image preview into label
-                    ImageIcon icon = new ImageIcon(file.getAbsolutePath());
-                    Image image = icon.getImage().getScaledInstance(
-                            cateringImageLabel.getWidth(),
-                            cateringImageLabel.getHeight(),
-                            Image.SCALE_SMOOTH
+                    ImageIcon icon = new ImageIcon(
+                            new ImageIcon(cateringImageBytes).getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH)
                     );
-
-                    // Set the scaled image as label icon
-                    cateringImageLabel.setIcon(new ImageIcon(image));
-                    cateringImageLabel.setText(""); // Remove placeholder text
-                    cateringImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                    cateringImageLabel.setVerticalAlignment(SwingConstants.CENTER);
-
+                    cateringImageLabel.setIcon(icon);
+                    cateringImageLabel.setText("");
                 } catch (IOException ioException) {
-                    JOptionPane.showMessageDialog(
-                            AddCateringPage.this,
-                            "Failed to read image file.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
-                    );
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Failed to read image file.");
                 }
             }
         }
     }
 
-
-    private class SaveCateringListener implements ActionListener {
+    private class SaveListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                String json = buildJson();
-                sendRequest("http://localhost:8080/api/catering", "POST", json);
-                JOptionPane.showMessageDialog(AddCateringPage.this, "Catering saved successfully!");
+                String json = "{"
+                        + "\"cateringName\":\"" + cateringNameField.getText().trim() + "\","
+                        + "\"cateringType\":\"" + cateringTypeField.getText().trim() + "\","
+                        + "\"cateringDescription\":\"" + cateringDescriptionArea.getText().trim() + "\","
+                        + "\"cateringPrice\":" + cateringPriceField.getText().trim() + ","
+                        + "\"cateringContact\":\"" + cateringContactField.getText().trim() + "\""
+                        + "}";
+
+                URL url = new URL("http://localhost:8080/api/catering");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.getOutputStream().write(json.getBytes());
+                conn.getOutputStream().flush();
+
+                if (conn.getResponseCode() == 201) {
+                    String response = new String(conn.getInputStream().readAllBytes());
+                    JSONObject obj = new JSONObject(response);
+                    int id = obj.getInt("cateringId");
+
+                    if (cateringImageBytes != null) {
+                        uploadImage(id, cateringImageBytes);
+                    }
+
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Catering saved successfully!");
+                    conn.disconnect();
+                } else {
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Error saving catering.");
+                }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(AddCateringPage.this, "Error saving catering: " + ex.getMessage());
+                JOptionPane.showMessageDialog(AddCateringPage.this, "Error: " + ex.getMessage());
+                ex.printStackTrace();
             }
         }
     }
 
-    private class EditButtonListener implements ActionListener {
+    private class EditListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (cateringIdComboBox.getItemCount() == 0) {
-                JOptionPane.showMessageDialog(AddCateringPage.this, "No catering IDs available.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+            try {
+                cateringIdComboBox.setEnabled(true);
+                cateringIdComboBox.removeAllItems();
+
+                URL url = new URL("http://localhost:8080/api/catering/all");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+
+                if (conn.getResponseCode() == 200) {
+                    String response = new String(conn.getInputStream().readAllBytes());
+                    JSONArray array = new JSONArray(response);
+
+                    if (array.isEmpty()) {
+                        JOptionPane.showMessageDialog(AddCateringPage.this, "No catering IDs found.");
+                        return;
+                    }
+
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject obj = array.getJSONObject(i);
+                        cateringIdComboBox.addItem(obj.getInt("cateringId"));
+                    }
+
+                    saveButton.setEnabled(false);
+                    submitEditButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
+                } else {
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Failed to fetch catering IDs.");
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(AddCateringPage.this, "Error: " + ex.getMessage());
             }
-            cateringIdComboBox.setEditable(true);
-            saveButton.setEnabled(false);
-            submitEditButton.setEnabled(true);
-            deleteButton.setEnabled(true);
+        }
+    }
+
+    private class ComboSelectionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Integer id = (Integer) cateringIdComboBox.getSelectedItem();
+            if (id == null) return;
+            try {
+                URL url = new URL("http://localhost:8080/api/catering/" + id);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+
+                if (conn.getResponseCode() == 200) {
+                    String response = new String(conn.getInputStream().readAllBytes());
+                    JSONObject obj = new JSONObject(response);
+
+                    cateringNameField.setText(obj.getString("cateringName"));
+                    cateringTypeField.setText(obj.getString("cateringType"));
+                    cateringDescriptionArea.setText(obj.getString("cateringDescription"));
+                    cateringPriceField.setText(String.valueOf(obj.getDouble("cateringPrice")));
+                    cateringContactField.setText(obj.getString("cateringContact"));
+
+                } else {
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Failed to fetch catering details.");
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(AddCateringPage.this, "Error: " + ex.getMessage());
+            }
         }
     }
 
     private class SubmitEditListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            Integer id = (Integer) cateringIdComboBox.getSelectedItem();
+            if (id == null) {
+                JOptionPane.showMessageDialog(AddCateringPage.this, "No catering selected.");
+                return;
+            }
+
             try {
-                String selectedId = (String) cateringIdComboBox.getSelectedItem();
-                if (selectedId == null || selectedId.isEmpty()) {
-                    JOptionPane.showMessageDialog(AddCateringPage.this, "Please select a catering ID.");
-                    return;
+                String json = "{"
+                        + "\"cateringName\":\"" + cateringNameField.getText().trim() + "\","
+                        + "\"cateringType\":\"" + cateringTypeField.getText().trim() + "\","
+                        + "\"cateringDescription\":\"" + cateringDescriptionArea.getText().trim() + "\","
+                        + "\"cateringPrice\":" + cateringPriceField.getText().trim() + ","
+                        + "\"cateringContact\":\"" + cateringContactField.getText().trim() + "\""
+                        + "}";
+
+                URL url = new URL("http://localhost:8080/api/catering/" + id);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.getOutputStream().write(json.getBytes());
+                conn.getOutputStream().flush();
+
+                if (conn.getResponseCode() == 200) {
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Catering updated successfully!");
+                } else {
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Failed to update catering.");
                 }
 
-                String json = buildJson();
-                sendRequest("http://localhost:8080/api/catering/" + selectedId, "PUT", json);
-                JOptionPane.showMessageDialog(AddCateringPage.this, "Catering updated successfully!");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(AddCateringPage.this, "Error updating catering: " + ex.getMessage());
+                JOptionPane.showMessageDialog(AddCateringPage.this, "Error: " + ex.getMessage());
             }
         }
     }
@@ -289,34 +316,32 @@ public class AddCateringPage extends JFrame {
     private class DeleteListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String selectedId = (String) cateringIdComboBox.getSelectedItem();
-            if (selectedId == null || selectedId.isEmpty()) {
-                JOptionPane.showMessageDialog(AddCateringPage.this, "Please select a catering ID.");
+            Integer id = (Integer) cateringIdComboBox.getSelectedItem();
+            if (id == null) {
+                JOptionPane.showMessageDialog(AddCateringPage.this, "Select a catering ID to delete.");
                 return;
             }
 
             int confirm = JOptionPane.showConfirmDialog(AddCateringPage.this,
-                    "Are you sure you want to delete this catering record?",
-                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+                    "Are you sure you want to delete catering ID " + id + "?",
+                    "Confirm Delete", JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    sendRequest("http://localhost:8080/api/catering/" + selectedId, "DELETE", null);
-                    JOptionPane.showMessageDialog(AddCateringPage.this, "Catering deleted successfully!");
-                    loadCateringIds();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(AddCateringPage.this, "Error deleting catering: " + ex.getMessage());
-                }
-            }
-        }
-    }
+                    URL url = new URL("http://localhost:8080/api/catering/" + id);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("DELETE");
 
-    private class ComboBoxSelectListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String selectedId = (String) cateringIdComboBox.getSelectedItem();
-            if (selectedId != null && !selectedId.isEmpty()) {
-                populateCateringDetails(selectedId);
+                    if (conn.getResponseCode() == 204) {
+                        JOptionPane.showMessageDialog(AddCateringPage.this, "Catering deleted successfully!");
+                        cateringIdComboBox.removeItem(id);
+                    } else {
+                        JOptionPane.showMessageDialog(AddCateringPage.this, "Failed to delete catering.");
+                    }
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(AddCateringPage.this, "Error: " + ex.getMessage());
+                }
             }
         }
     }
@@ -328,45 +353,30 @@ public class AddCateringPage extends JFrame {
         }
     }
 
-    // --- Helper Methods ---
-    private String buildJson() {
-        return "{"
-                + "\"cateringName\":\"" + cateringNameField.getText() + "\","
-                + "\"cateringType\":\"" + cateringTypeField.getText() + "\","
-                + "\"cateringDescription\":\"" + cateringDescriptionArea.getText() + "\","
-                + "\"cateringPrice\":" + cateringPriceField.getText() + ","
-                + "\"cateringContact\":\"" + cateringContactField.getText() + "\","
-                + "\"cateringImage\":\"" + (cateringImageBytes != null ? Base64.getEncoder().encodeToString(cateringImageBytes) : "") + "\""
-                + "}";
-    }
-
-    private void sendRequest(String urlString, String method, String json) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod(method);
-        conn.setRequestProperty("Content-Type", "application/json");
+    // ---------- Helper for Image Upload ----------
+    private void uploadImage(int id, byte[] imageBytes) throws IOException {
+        String boundary = "---boundary";
+        URL uploadUrl = new URL("http://localhost:8080/api/catering/" + id + "/uploadImage");
+        HttpURLConnection conn = (HttpURLConnection) uploadUrl.openConnection();
         conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
-        if (json != null) {
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(json.getBytes());
-                os.flush();
-            }
+        try (DataOutputStream request = new DataOutputStream(conn.getOutputStream())) {
+            request.writeBytes("--" + boundary + "\r\n");
+            request.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n");
+            request.writeBytes("Content-Type: image/jpeg\r\n\r\n");
+            request.write(imageBytes);
+            request.writeBytes("\r\n--" + boundary + "--\r\n");
         }
 
-        int responseCode = conn.getResponseCode();
-        if (responseCode != 200 && responseCode != 201) {
-            String error = new String(conn.getErrorStream().readAllBytes());
-            throw new IOException("Backend Error: " + error);
+        if (conn.getResponseCode() != 200 && conn.getResponseCode() != 201) {
+            JOptionPane.showMessageDialog(this, "Image upload failed: " + conn.getResponseCode());
         }
     }
 
+    // ---------- Main Method ----------
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new AddCateringPage();
-            }
-        });
+        new AddCateringPage();
     }
 }
