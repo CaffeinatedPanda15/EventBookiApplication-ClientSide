@@ -38,7 +38,6 @@ public class AddCateringPage extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Label + ComboBox for Catering IDs
         JLabel comboLabel = new JLabel("Select Catering ID:");
         comboLabel.setBounds(20, 20, 150, 25);
         add(comboLabel);
@@ -52,7 +51,6 @@ public class AddCateringPage extends JFrame {
         editButton.setBounds(340, 20, 100, 25);
         add(editButton);
 
-        // Name
         JLabel nameLabel = new JLabel("Catering Name:");
         nameLabel.setBounds(20, 60, 150, 25);
         add(nameLabel);
@@ -61,7 +59,6 @@ public class AddCateringPage extends JFrame {
         cateringNameField.setBounds(170, 60, 350, 25);
         add(cateringNameField);
 
-        // Type
         JLabel typeLabel = new JLabel("Catering Type:");
         typeLabel.setBounds(20, 100, 150, 25);
         add(typeLabel);
@@ -70,7 +67,6 @@ public class AddCateringPage extends JFrame {
         cateringTypeField.setBounds(170, 100, 350, 25);
         add(cateringTypeField);
 
-        // Description
         JLabel descLabel = new JLabel("Description:");
         descLabel.setBounds(20, 140, 150, 25);
         add(descLabel);
@@ -143,7 +139,7 @@ public class AddCateringPage extends JFrame {
         setVisible(true);
     }
 
-    // ----------- LISTENERS ------------ //
+    //  LISTENERS
 
     private class UploadImageListener implements ActionListener {
         @Override
@@ -353,7 +349,6 @@ public class AddCateringPage extends JFrame {
         }
     }
 
-    // ---------- Helper for Image Upload ----------
     private void uploadImage(int id, byte[] imageBytes) throws IOException {
         String boundary = "---boundary";
         URL uploadUrl = new URL("http://localhost:8080/api/catering/" + id + "/uploadImage");
@@ -375,7 +370,6 @@ public class AddCateringPage extends JFrame {
         }
     }
 
-    // ---------- Main Method ----------
     public static void main(String[] args) {
         new AddCateringPage();
     }
