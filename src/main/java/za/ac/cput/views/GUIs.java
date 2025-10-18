@@ -10,6 +10,7 @@ import za.ac.cput.domain.eventdomains.Venue;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -173,15 +174,17 @@ public class GUIs {
     private JPanel panelAdminList;
     private JPanel panlDisplayAdminTitle;
     private JPanel panlDisplayAdminNavButtons;
-    private JButton button9;
-    private JButton button10;
-    private JButton button11;
-    private JButton button12;
+    private JButton buttonAdminDetailsHome;
+    private JButton buttonAdminDetailsEvents;
+    private JButton buttonAdminDetailsVenue;
+    private JButton buttonAdminDetailsCatering;
     private JPanel panelDisplayAdminButtons;
     private JButton buttonAddingAdmin;
     private JButton buttonRefreshAdminList;
     private JLabel labelAdminDetailsTitle;
     private JLabel labelAddAdminTItle;
+    private JButton buttonAdminDetailsLogoff;
+    private JButton buttonVenueEvents;
 
     private final CardLayout cardLayout;
 
@@ -216,6 +219,12 @@ public class GUIs {
 
         //Display Admin Buttons
         buttonAddingAdmin.addActionListener(e -> cardLayout.show(panelRoot, "addAdmin"));
+        buttonRefreshAdminList.addActionListener(e -> loadAdmins());
+        buttonAdminDetailsHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        buttonAdminDetailsEvents.addActionListener(e -> cardLayout.show(panelRoot, "catering")); // or event page
+        buttonAdminDetailsVenue.addActionListener(e -> cardLayout.show(panelRoot, "venue"));
+        buttonAdminDetailsCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
+        buttonAdminDetailsLogoff.addActionListener(e -> cardLayout.show(panelRoot, "login"));
 
         //Register Admin Buttons
         buttonAdminRegister.addActionListener(e -> registerAdmin());
@@ -235,6 +244,7 @@ public class GUIs {
 
         //Venue Buttons
         buttonVenueHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        buttonVenueEvents.addActionListener(e -> cardLayout.show(panelRoot, "events"));
         buttonVenueCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
         buttonVenueDisplayAdmin.addActionListener(e -> cardLayout.show(panelRoot, "viewAdmins"));
         buttonVenueLogout.addActionListener(e -> cardLayout.show(panelRoot, "login"));
@@ -253,11 +263,13 @@ public class GUIs {
         buttonAddImage.addActionListener(e -> uploadVenueImage());
 
         //Catering Buttons
-
         buttonCateringHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
         buttonCateringEvents.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
         buttonCateringVenue.addActionListener(e -> cardLayout.show(panelRoot, "venue"));
         buttonCateringLogoff.addActionListener(e -> cardLayout.show(panelRoot, "login"));
+
+
+        cardLayout.show(panelRoot, "home");
 
 
     }
@@ -415,29 +427,28 @@ public class GUIs {
                 return;
             }
 
-            String json = String.format("{\"emailAddress\":\"%s\",\"password\":\"%s\"}", email, password);
+            String auth = email + ":" + password;
+            String encodedAuth = java.util.Base64.getEncoder().encodeToString(auth.getBytes());
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/admin/login"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .uri(URI.create("http://localhost:8080/admin/profile"))
+                    .header("Authorization", "Basic " + encodedAuth)
+                    .GET()
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                String responseBody = response.body();
-                JSONObject jsonObj = new JSONObject(responseBody);
-                String fullName = jsonObj.getString("fullName");
+                JSONObject json = new JSONObject(response.body());
+                String fullName = json.getString("fullName");
 
-                JOptionPane.showMessageDialog(null, "✅ Admin Login successful!\nWelcome " + fullName);
-
-                // Switch to Admin Home
+                JOptionPane.showMessageDialog(null, "✅ Welcome, " + fullName + "!");
                 cardLayout.show(panelRoot, "home");
-
+            } else if (response.statusCode() == 401) {
+                JOptionPane.showMessageDialog(null, "❌ Invalid email or password.", "Login Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "❌ Login failed! Check email or password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "❌ Login failed! Try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

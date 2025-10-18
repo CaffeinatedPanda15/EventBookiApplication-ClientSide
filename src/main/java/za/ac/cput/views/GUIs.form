@@ -452,8 +452,8 @@
                       <component id="e4" class="javax.swing.JButton" binding="buttonHomeDisplayAdmin">
                         <constraints/>
                         <properties>
-                          <label value="Display Admin"/>
-                          <text value="Display Admin"/>
+                          <label value="Admin Details"/>
+                          <text value="Admin Details"/>
                         </properties>
                       </component>
                       <component id="e9250" class="javax.swing.JButton" binding="logoutButton" default-binding="true">
@@ -650,6 +650,12 @@
                     <constraints/>
                     <properties>
                       <text value="Home"/>
+                    </properties>
+                  </component>
+                  <component id="74f10" class="javax.swing.JButton" binding="buttonVenueEvents">
+                    <constraints/>
+                    <properties>
+                      <text value="Events"/>
                     </properties>
                   </component>
                   <component id="3b40b" class="javax.swing.JButton" binding="buttonVenueCatering">
@@ -1490,28 +1496,34 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="9e18d" class="javax.swing.JButton" binding="button9" default-binding="true">
+                  <component id="9e18d" class="javax.swing.JButton" binding="buttonAdminDetailsHome">
                     <constraints/>
                     <properties>
-                      <text value="Button"/>
+                      <text value="Home"/>
                     </properties>
                   </component>
-                  <component id="c9d35" class="javax.swing.JButton" binding="button10" default-binding="true">
+                  <component id="c9d35" class="javax.swing.JButton" binding="buttonAdminDetailsEvents">
                     <constraints/>
                     <properties>
-                      <text value="Button"/>
+                      <text value="Events"/>
                     </properties>
                   </component>
-                  <component id="9303a" class="javax.swing.JButton" binding="button11" default-binding="true">
+                  <component id="9303a" class="javax.swing.JButton" binding="buttonAdminDetailsVenue">
                     <constraints/>
                     <properties>
-                      <text value="Button"/>
+                      <text value="Venue"/>
                     </properties>
                   </component>
-                  <component id="92e2e" class="javax.swing.JButton" binding="button12" default-binding="true">
+                  <component id="92e2e" class="javax.swing.JButton" binding="buttonAdminDetailsCatering">
                     <constraints/>
                     <properties>
-                      <text value="Button"/>
+                      <text value="Catering"/>
+                    </properties>
+                  </component>
+                  <component id="50ef6" class="javax.swing.JButton" binding="buttonAdminDetailsLogoff">
+                    <constraints/>
+                    <properties>
+                      <text value="Logout"/>
                     </properties>
                   </component>
                 </children>
