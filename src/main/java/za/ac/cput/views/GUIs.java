@@ -9,7 +9,15 @@ import za.ac.cput.domain.endusers.Admin;
 import za.ac.cput.domain.eventdomains.Venue;
 
 import javax.swing.*;
+import java.util.List;
+import java.awt.CardLayout;
 import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -187,6 +195,7 @@ public class GUIs {
     private JLabel labelAddAdminTItle;
     private JButton buttonAdminDetailsLogoff;
     private JButton buttonVenueEvents;
+    private HomePage homePage;
 
     private final CardLayout cardLayout;
 
@@ -196,14 +205,22 @@ public class GUIs {
     public GUIs() {
         cardLayout = new CardLayout();
         panelRoot.setLayout(cardLayout);
+        CreateEventPage createEventPage = new CreateEventPage(cardLayout, panelRoot);
+        this.homePage = new HomePage(cardLayout, panelRoot, createEventPage);
+
 
         panelRoot.add(panelLoginPage, "login");
         panelRoot.add(panelAddAdminPage, "addAdmin");
-        panelRoot.add(PanelHomePage, "home");
+        //panelRoot.add(PanelHomePage, "home");
+        panelRoot.add(homePage, "homePage");
+        panelRoot.add(createEventPage, "createEventPage");
+
         panelRoot.add(panelCateringPage, "catering");
         panelRoot.add(panelVenuePage, "venue");
         panelRoot.add(paneleditvenue, "editvenue");
         panelRoot.add(panelDisplayAdmin, "viewAdmins");
+
+
 
         jScrollAdmins.setViewportView(panelAdminList);
         jScrollAdmins.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -222,7 +239,7 @@ public class GUIs {
         //Display Admin Buttons
         buttonAddingAdmin.addActionListener(e -> cardLayout.show(panelRoot, "addAdmin"));
         buttonRefreshAdminList.addActionListener(e -> loadAdmins());
-        buttonAdminDetailsHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        buttonAdminDetailsHome.addActionListener(e -> cardLayout.show(panelRoot, "homePage"));
         buttonAdminDetailsEvents.addActionListener(e -> cardLayout.show(panelRoot, "catering")); // or event page
         buttonAdminDetailsVenue.addActionListener(e -> cardLayout.show(panelRoot, "venue"));
         buttonAdminDetailsCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
@@ -231,8 +248,8 @@ public class GUIs {
         //Register Admin Buttons
         buttonAdminRegister.addActionListener(e -> registerAdmin());
         buttonAdminClear.addActionListener(e -> clearAdminFields());
-        buttonAdminCancel.addActionListener(e -> cardLayout.show(panelRoot, "home"));
-        buttonAddAdminHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        buttonAdminCancel.addActionListener(e -> cardLayout.show(panelRoot, "homePage"));
+        buttonAddAdminHome.addActionListener(e -> cardLayout.show(panelRoot, "homePage"));
         buttonAddAdminevents.addActionListener(e -> cardLayout.show(panelRoot, "catering")); // or event page
         buttonAddAdminVenue.addActionListener(e -> cardLayout.show(panelRoot, "venue"));
 
@@ -245,7 +262,7 @@ public class GUIs {
 
 
         //Venue Buttons
-        buttonVenueHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        buttonVenueHome.addActionListener(e -> cardLayout.show(panelRoot, "homePage"));
         buttonVenueEvents.addActionListener(e -> cardLayout.show(panelRoot, "events"));
         buttonVenueCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
         buttonVenueDisplayAdmin.addActionListener(e -> cardLayout.show(panelRoot, "viewAdmins"));
@@ -255,7 +272,7 @@ public class GUIs {
 
 
         //Edit Venue Buttons
-        homeButton.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        homeButton.addActionListener(e -> cardLayout.show(panelRoot, "homePage"));
         cateringButton.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
         logoutButton1.addActionListener(e -> cardLayout.show(panelRoot, "login"));
         editButton.addActionListener(e -> setEditable(true));
@@ -265,13 +282,13 @@ public class GUIs {
         buttonAddImage.addActionListener(e -> uploadVenueImage());
 
         //Catering Buttons
-        buttonCateringHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
+        buttonCateringHome.addActionListener(e -> cardLayout.show(panelRoot, "homePage"));
         buttonCateringEvents.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
         buttonCateringVenue.addActionListener(e -> cardLayout.show(panelRoot, "venue"));
         buttonCateringLogoff.addActionListener(e -> cardLayout.show(panelRoot, "login"));
 
 
-        cardLayout.show(panelRoot, "home");
+        cardLayout.show(panelRoot, "homePage");
 
 
     }
@@ -339,19 +356,17 @@ public class GUIs {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/admin/getAll"))
-                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
                     .GET()
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                String responseBody = response.body();
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-                Admin[] adminArray = mapper.readValue(responseBody, Admin[].class);
-                admins = java.util.Arrays.asList(adminArray);
+                return mapper.readValue(response.body(), new com.fasterxml.jackson.core.type.TypeReference<List<Admin>>() {});
             } else {
                 JOptionPane.showMessageDialog(null, "❌ Failed to load admins.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -360,7 +375,7 @@ public class GUIs {
             JOptionPane.showMessageDialog(null, "⚠️ Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return admins;
-    }
+    }//end of fetch admin method
 
 
     public void loadAdmins() {
@@ -369,26 +384,25 @@ public class GUIs {
         java.util.List<Admin> admins = fetchedAdmins();
 
         if (admins.isEmpty()) {
-            JLabel noAdminsLabel = new JLabel("No admins found.");
-            noAdminsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-            noAdminsLabel.setHorizontalAlignment(SwingConstants.CENTER);
             panelAdminList.setLayout(new BorderLayout());
+            JLabel noAdminsLabel = new JLabel("No admins found.");
+            noAdminsLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            noAdminsLabel.setHorizontalAlignment(SwingConstants.CENTER);
             panelAdminList.add(noAdminsLabel, BorderLayout.CENTER);
         } else {
             panelAdminList.setLayout(new BoxLayout(panelAdminList, BoxLayout.Y_AXIS));
 
             for (int i = 0; i < admins.size(); i += 3) {
                 JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-                rowPanel.setBackground(new Color(245, 245, 245));
+                rowPanel.setBackground(Color.WHITE);
 
                 for (int j = i; j < i + 3 && j < admins.size(); j++) {
                     Admin admin = admins.get(j);
 
-                    JPanel adminBox = new JPanel();
-                    adminBox.setLayout(new GridLayout(0, 1, 5, 2));
-                    adminBox.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                    adminBox.setBackground(new Color(240, 240, 240));
-                    adminBox.setPreferredSize(new Dimension(300, 150));
+                    JPanel adminBox = new JPanel(new GridLayout(0, 1, 2, 2));
+                    adminBox.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                    adminBox.setBackground(new Color(245, 245, 245));
+                    adminBox.setPreferredSize(new Dimension(250, 130));
 
                     adminBox.add(new JLabel("Username: " + admin.getUserName()));
                     adminBox.add(new JLabel("Full Name: " + admin.getFullName()));
@@ -446,7 +460,7 @@ public class GUIs {
                 String fullName = json.getString("fullName");
 
                 JOptionPane.showMessageDialog(null, "✅ Welcome, " + fullName + "!");
-                cardLayout.show(panelRoot, "home");
+                cardLayout.show(panelRoot, "homePage");
             } else if (response.statusCode() == 401) {
                 JOptionPane.showMessageDialog(null, "❌ Invalid email or password.", "Login Error", JOptionPane.ERROR_MESSAGE);
             } else {

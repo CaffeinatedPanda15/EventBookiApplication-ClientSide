@@ -76,16 +76,27 @@ public class HomePage extends JPanel {
 
         JButton btnHome = createNavButton("Home");
         JButton btnAdd = createNavButton("Add Event");
+        JButton btnVenues = createNavButton("venue");
+        JButton btnCatering = createNavButton("Catering");
+        JButton btnLogout = createNavButton("Logout");
 
         btnAdd.addActionListener(e -> {
             createEventPage.loadEvent("");
-            cardLayout.show(mainPanel, "CreateEventPage");
+            cardLayout.show(mainPanel, "createEventPage");
+
         });
 
         btnHome.addActionListener(e -> cardLayout.show(mainPanel, "HomePage"));
+        btnVenues.addActionListener(e -> cardLayout.show(mainPanel, "venue"));
+        btnCatering.addActionListener(e -> new AddCateringPage());
+        btnCatering.addActionListener(e -> cardLayout.show(mainPanel, "Catering"));
+        btnLogout.addActionListener(e -> cardLayout.show(mainPanel, "login"));
 
         navPanel.add(btnHome);
         navPanel.add(btnAdd);
+        navPanel.add(btnVenues);
+        navPanel.add(btnCatering);
+        navPanel.add(btnLogout);
 
         panelNorth.add(navPanel, BorderLayout.EAST);
         add(panelNorth, BorderLayout.NORTH);
@@ -132,7 +143,7 @@ public class HomePage extends JPanel {
                 String selectedEvent = eventsList.getSelectedValue();
                 if (selectedEvent != null && !selectedEvent.equals("No events available")) {
                     createEventPage.loadEvent(selectedEvent);
-                    cardLayout.show(mainPanel, "CreateEventPage");
+                    cardLayout.show(mainPanel, "createEventPage");
                 }
             }
         });

@@ -21,7 +21,7 @@ public class EventsDAO {
 
     public static List<String> getAllEvents() {
         List<String> events = new ArrayList<>();
-        String sql = "SELECT event_id, event_name, event_descriptions, event_location, event_date, event_time, category, status FROM events";
+        String sql = "SELECT event_id, event_name, event_description, event_location, event_date, event_time, category, status FROM events";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement stmt = conn.createStatement();
@@ -30,7 +30,7 @@ public class EventsDAO {
             while (rs.next()) {
                 String event = rs.getLong("event_id") + " - " +
                         rs.getString("event_name") + " | " +
-                        rs.getString("event_descriptions") + " | " +
+                        rs.getString("event_description") + " | " +
                         rs.getString("event_location") + " | " +
                         rs.getString("event_date") + " " +
                         rs.getString("event_time") + " | " +
@@ -48,7 +48,7 @@ public class EventsDAO {
 
     // Save a new event
     public static void saveEvent(String name, String description, String location, String date, String time, String category, String status) {
-        String sql = "INSERT INTO events (event_name, event_descriptions, event_location, event_date, event_time, category, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO events (event_name, event_description, event_location, event_date, event_time, category, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -69,7 +69,7 @@ public class EventsDAO {
 
     // Update an existing event by event_id
     public static void updateEvent(long eventId, String name, String description, String location, String date, String time, String category, String status) {
-        String sql = "UPDATE events SET event_name = ?, event_descriptions = ?, event_location = ?, event_date = ?, event_time = ?, category = ?, status = ? WHERE event_id = ?";
+        String sql = "UPDATE events SET event_name = ?, event_description = ?, event_location = ?, event_date = ?, event_time = ?, category = ?, status = ? WHERE event_id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -88,4 +88,6 @@ public class EventsDAO {
             e.printStackTrace();
         }
     }
-}
+
+
+}//end of class
