@@ -10,6 +10,8 @@ import za.ac.cput.domain.eventdomains.Venue;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -236,7 +238,7 @@ public class GUIs {
 
 
         //Home Buttons
-        buttonCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
+        buttonCatering.addActionListener(new CateringButtonListener());
         venueButton.addActionListener(e -> {cardLayout.show(panelRoot, "venue"); refreshVenueList();});
         logoutButton.addActionListener(e -> cardLayout.show(panelRoot, "login"));
         buttonHomeDisplayAdmin.addActionListener((e -> {cardLayout.show(panelRoot, "viewAdmins"); loadAdmins();}));
@@ -731,6 +733,36 @@ public class GUIs {
             }
         }
     }//end of upload venue image method
+
+    /*  Load Catering Thread */
+
+    private class CateringButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                AddCateringPage cateringPage = new AddCateringPage();
+                                cateringPage.setVisible(true);
+                            }
+                        });
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null,
+                                "Failed to open Add Catering Page: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+            thread.start();
+        }
+    }
 
 //end of edit venue page
 }//end if class
