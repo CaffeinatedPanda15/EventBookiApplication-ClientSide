@@ -117,6 +117,9 @@ public class LoginPage extends JPanel implements ActionListener {
         add(panelNorth, BorderLayout.NORTH);
         add(panelWest, BorderLayout.WEST);
         add(panelRight, BorderLayout.CENTER);
+
+
+
     }
 
     private void loginAdmin() {
@@ -184,4 +187,33 @@ public class LoginPage extends JPanel implements ActionListener {
             switchToRegisterAdminPage();
         }
     }
+
+    private class CateringButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                AddCateringPage cateringPage = new AddCateringPage();
+                                cateringPage.setVisible(true);
+                            }
+                        });
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null,
+                                "Failed to open Add Catering Page: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+            thread.start();
+        }
+    }
+
 }

@@ -225,7 +225,7 @@ public class GUIs {
         buttonAdminDetailsHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
         buttonAdminDetailsEvents.addActionListener(e -> cardLayout.show(panelRoot, "catering")); // or event page
         buttonAdminDetailsVenue.addActionListener(e -> cardLayout.show(panelRoot, "venue"));
-        buttonAdminDetailsCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
+        buttonAdminDetailsCatering.addActionListener(new CateringButtonListener());
         buttonAdminDetailsLogoff.addActionListener(e -> cardLayout.show(panelRoot, "login"));
 
         //Register Admin Buttons
@@ -247,7 +247,7 @@ public class GUIs {
         //Venue Buttons
         buttonVenueHome.addActionListener(e -> cardLayout.show(panelRoot, "home"));
         buttonVenueEvents.addActionListener(e -> cardLayout.show(panelRoot, "events"));
-        buttonVenueCatering.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
+        buttonVenueCatering.addActionListener(new CateringButtonListener());
         buttonVenueDisplayAdmin.addActionListener(e -> cardLayout.show(panelRoot, "viewAdmins"));
         buttonVenueLogout.addActionListener(e -> cardLayout.show(panelRoot, "login"));
         buttonAddVenue.addActionListener(e -> cardLayout.show(panelRoot, "editvenue"));
@@ -256,7 +256,7 @@ public class GUIs {
 
         //Edit Venue Buttons
         homeButton.addActionListener(e -> cardLayout.show(panelRoot, "home"));
-        cateringButton.addActionListener(e -> cardLayout.show(panelRoot, "catering"));
+        cateringButton.addActionListener(new CateringButtonListener());
         logoutButton1.addActionListener(e -> cardLayout.show(panelRoot, "login"));
         editButton.addActionListener(e -> setEditable(true));
         saveButton.addActionListener(e -> SaveVenue());
@@ -734,7 +734,6 @@ public class GUIs {
         }
     }//end of upload venue image method
 
-    /*  Load Catering Thread */
 
     private class CateringButtonListener implements ActionListener {
         @Override
