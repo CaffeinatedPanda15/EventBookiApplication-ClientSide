@@ -461,6 +461,9 @@ public class AddCateringPage extends JFrame {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(AddCateringPage.this, "Error: " + ex.getMessage());
             }
+
+            loadCateringIds();
+            clearForm();
         }
     }
 }
