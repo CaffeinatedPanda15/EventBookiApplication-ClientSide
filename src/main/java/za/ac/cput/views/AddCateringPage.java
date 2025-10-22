@@ -65,7 +65,7 @@ public class AddCateringPage extends JFrame {
         deleteButton.setEnabled(false);
         deleteButton.addActionListener(new DeleteListener());
 
-        // --- Catering Name ---
+
         JLabel nameLabel = new JLabel("Catering Name:");
         nameLabel.setBounds(20, 70, 120, 25);
         add(nameLabel);
@@ -74,7 +74,7 @@ public class AddCateringPage extends JFrame {
         cateringNameField.setText(" ");
         add(cateringNameField);
 
-        // --- Catering Type ---
+
         JLabel typeLabel = new JLabel("Catering Type:");
         typeLabel.setBounds(20, 110, 120, 25);
         add(typeLabel);
@@ -84,7 +84,7 @@ public class AddCateringPage extends JFrame {
         add(cateringTypeComboBox);
         populateCateringTypes();
 
-        // --- Description ---
+
         JLabel descLabel = new JLabel("Description:");
         descLabel.setBounds(20, 150, 120, 25);
         add(descLabel);
@@ -95,7 +95,7 @@ public class AddCateringPage extends JFrame {
         descScroll.setBounds(150, 150, 300, 80);
         add(descScroll);
 
-        // --- Price ---
+
         JLabel priceLabel = new JLabel("Price:");
         priceLabel.setBounds(20, 240, 120, 25);
         add(priceLabel);
@@ -104,7 +104,7 @@ public class AddCateringPage extends JFrame {
         cateringPriceField.setText(" ");
         add(cateringPriceField);
 
-        // --- Contact with validation ---
+
         JLabel contactLabel = new JLabel("Contact:");
         contactLabel.setBounds(20, 280, 120, 25);
         add(contactLabel);
@@ -139,7 +139,7 @@ public class AddCateringPage extends JFrame {
         add(uploadImageButton);
         uploadImageButton.addActionListener(new UploadImageListener());
 
-        // --- Save button ---
+
         saveButton = new JButton("Save New");
         saveButton.setBounds(150, 500, 120, 30);
         add(saveButton);
@@ -218,8 +218,9 @@ public class AddCateringPage extends JFrame {
         }
     }
 
-    // --- Populate fields when an ID is selected ---
+
     private class CateringIdSelectionListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             Long selectedId = (Long) cateringIdComboBox.getSelectedItem();
@@ -227,7 +228,7 @@ public class AddCateringPage extends JFrame {
 
             new Thread(() -> {
                 try {
-                    // --- Fetch JSON data ---
+
                     URL url = new URL("http://localhost:8080/api/catering/" + selectedId);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
@@ -244,7 +245,6 @@ public class AddCateringPage extends JFrame {
                         double price = c.getDouble("cateringPrice");
                         String contact = c.getString("cateringContact");
 
-                        // Update text fields on Swing thread
                         SwingUtilities.invokeLater(() -> {
                             cateringNameField.setText(name);
                             cateringTypeComboBox.setSelectedItem(type);
