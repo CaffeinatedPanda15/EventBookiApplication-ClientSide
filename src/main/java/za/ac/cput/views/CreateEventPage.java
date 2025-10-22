@@ -5,6 +5,10 @@ import za.ac.cput.dao.EventsDAO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class CreateEventPage extends JPanel implements ActionListener {
     private CardLayout cardLayout;
@@ -52,7 +56,8 @@ public class CreateEventPage extends JPanel implements ActionListener {
         txtTime = createStyledTextField();
         txtCategory = createStyledTextField();
 
-        cbxLocation = new JComboBox<>(new String[]{"Venue A", "Venue B", "Venue C"});
+        cbxLocation = getVenueComboBox();
+        styleComboBox(cbxLocation);
         cbxStatus = new JComboBox<>(new String[]{"PLANNED", "ONGOING", "COMPLETED"});
 
         styleComboBox(cbxLocation);
@@ -116,26 +121,47 @@ public class CreateEventPage extends JPanel implements ActionListener {
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.anchor = GridBagConstraints.WEST;
 
-        gbc.gridx = 0; gbc.gridy = 0; panelCenter.add(lblName, gbc);
-        gbc.gridx = 1; panelCenter.add(txtName, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelCenter.add(lblName, gbc);
+        gbc.gridx = 1;
+        panelCenter.add(txtName, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblDescription, gbc);
-        gbc.gridx = 1; panelCenter.add(new JScrollPane(txtDescription), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        panelCenter.add(lblDescription, gbc);
+        gbc.gridx = 1;
+        panelCenter.add(new JScrollPane(txtDescription), gbc);
 
-        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblLocation, gbc);
-        gbc.gridx = 1; panelCenter.add(cbxLocation, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        panelCenter.add(lblLocation, gbc);
+        gbc.gridx = 1;
+        panelCenter.add(cbxLocation, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblDate, gbc);
-        gbc.gridx = 1; panelCenter.add(txtDate, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        panelCenter.add(lblDate, gbc);
+        gbc.gridx = 1;
+        panelCenter.add(txtDate, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblTime, gbc);
-        gbc.gridx = 1; panelCenter.add(txtTime, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        panelCenter.add(lblTime, gbc);
+        gbc.gridx = 1;
+        panelCenter.add(txtTime, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblCategory, gbc);
-        gbc.gridx = 1; panelCenter.add(txtCategory, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        panelCenter.add(lblCategory, gbc);
+        gbc.gridx = 1;
+        panelCenter.add(txtCategory, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; panelCenter.add(lblStatus, gbc);
-        gbc.gridx = 1; panelCenter.add(cbxStatus, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        panelCenter.add(lblStatus, gbc);
+        gbc.gridx = 1;
+        panelCenter.add(cbxStatus, gbc);
 
         add(panelCenter, BorderLayout.CENTER);
 
@@ -144,7 +170,7 @@ public class CreateEventPage extends JPanel implements ActionListener {
         add(panelSouth, BorderLayout.SOUTH);
 
         btnSave.addActionListener(this);
-        btnBack.addActionListener(e -> cardLayout.show(mainPanel, "HomePage"));
+        btnBack.addActionListener(e -> cardLayout.show(mainPanel, "homePage"));
     }
 
     @Override
@@ -179,5 +205,30 @@ public class CreateEventPage extends JPanel implements ActionListener {
             txtCategory.setText(parts[4].trim());
             cbxStatus.setSelectedItem(parts[5].trim());
         }
+    }
+
+    public static JComboBox<String> getVenueComboBox() {
+        try {
+            URL url = new URL("http://localhost:8080/venue/all");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            String line, json = "";
+            while ((line = br.readLine()) != null)
+                json += line;
+                br.close();
+
+                json = json.replace("[", "").replace("]", "").trim();
+                String[] venues = json.split("\\},\\{");
+
+                return new JComboBox<>(venues);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JComboBox<>(new String[]{"No venues available"});
+        }
+
     }
 }
