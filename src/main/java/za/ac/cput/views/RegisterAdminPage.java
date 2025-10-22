@@ -275,6 +275,35 @@ public class RegisterAdminPage extends JPanel implements ActionListener {
         }
     }
 
+    private class CateringButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                AddCateringPage cateringPage = new AddCateringPage();
+                                cateringPage.setVisible(true);
+                            }
+                        });
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null,
+                                "Failed to open Add Catering Page: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+            thread.start();
+        }
+    }
+
+
     /*public static void main(String[] args) {
         JFrame frame = new JFrame("Register Admin Page");
         RegisterAdminPage registerPage = new RegisterAdminPage();
